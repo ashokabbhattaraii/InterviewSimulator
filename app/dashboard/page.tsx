@@ -1,0 +1,31 @@
+"use client";
+import Image from "next/image";
+import { Bell } from "lucide-react";
+import Nav from "./Component/nav";
+import { useAuthStore } from "../(auth)/store/userAuth";
+import { useEffect } from "react";
+import createClient from "@/lib/client/client";
+import SideBar from "./Component/sidebar";
+export default function Dashboard() {
+  const { setUser } = useAuthStore();
+  useEffect(() => {
+    async function fetchUser() {
+      const supabase = await createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      console.log("User Data from dashboard", user);
+      setUser(user);
+      console.log("User Data from dashboard", user);
+    }
+    fetchUser();
+  }, []);
+  return (
+    <>
+      <div className="bg-black w-full">
+        <Nav></Nav>
+        <SideBar></SideBar>
+      </div>
+    </>
+  );
+}
