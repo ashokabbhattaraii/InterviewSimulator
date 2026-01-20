@@ -2,9 +2,16 @@ interface QuestionProps {
   title: string;
   content: string;
   id: string;
+  index: number;
   options?: string[] | null;
 }
-export default function Quest({ title, content, id, options }: QuestionProps) {
+export default function Quest({
+  title,
+  content,
+  id,
+  options,
+  index,
+}: QuestionProps) {
   const parsedOptions =
     typeof options === "string" ? JSON.parse(options) : options;
   console.log("from each qns", title);
@@ -16,7 +23,7 @@ export default function Quest({ title, content, id, options }: QuestionProps) {
     <div className="bg-slate-800/50 backdrop-blur-xl rounded-2xl p-8 border border-slate-700/50 mb-6">
       <div className="flex items-start gap-4 mb-6">
         <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shrink-0">
-          <span className="text-xl font-bold">1</span>
+          <span className="text-xl font-bold">{index + 1}</span>
         </div>
         <div className="flex-1">
           <h2 className="text-2xl font-bold text-white mb-2">{title}</h2>

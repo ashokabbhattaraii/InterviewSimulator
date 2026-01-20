@@ -1,0 +1,45 @@
+id,text,isCorrect,questionId,createdAt,updatedAt
+a1,Frontend,false,q1,2026-01-20,2026-01-20
+a2,Backend,false,q1,2026-01-20,2026-01-20
+a3,Database,false,q1,2026-01-20,2026-01-20
+a4,OS,false,q1,2026-01-20,2026-01-20
+a5,UI,true,q2,2026-01-20,2026-01-20
+a6,Database,false,q2,2026-01-20,2026-01-20
+a7,Server,false,q2,2026-01-20,2026-01-20
+a8,OS,false,q2,2026-01-20,2026-01-20
+a9,Browser,false,q3,2026-01-20,2026-01-20
+a10,Server,true,q3,2026-01-20,2026-01-20
+a11,Mobile,false,q3,2026-01-20,2026-01-20
+a12,Database,false,q3,2026-01-20,2026-01-20
+a13,ORM,true,q4,2026-01-20,2026-01-20
+a14,Framework,false,q4,2026-01-20,2026-01-20
+a15,Language,false,q4,2026-01-20,2026-01-20
+a16,UI,false,q4,2026-01-20,2026-01-20
+a17,HyperText Transfer Protocol,true,q5,2026-01-20,2026-01-20
+a18,High Text Transfer Protocol,false,q5,2026-01-20,2026-01-20
+a19,Hyper Tool Protocol,false,q5,2026-01-20,2026-01-20
+a20,Host Transfer Protocol,false,q5,2026-01-20,2026-01-20
+
+a21,Authentication,true,q6,2026-01-20,2026-01-20
+a22,Styling,false,q6,2026-01-20,2026-01-20
+a23,Database,false,q6,2026-01-20,2026-01-20
+a24,Logging,false,q6,2026-01-20,2026-01-20
+
+a25,Query Data,true,q7,2026-01-20,2026-01-20
+a26,Design UI,false,q7,2026-01-20,2026-01-20
+a27,Run Server,false,q7,2026-01-20,2026-01-20
+a28,Create OS,false,q7,2026-01-20,2026-01-20
+
+a29,React,true,q8,2026-01-20,2026-01-20
+a30,Vue,false,q8,2026-01-20,2026-01-20
+a31,Angular,false,q8,2026-01-20,2026-01-20
+a32,Svelte,false,q8,2026-01-20,2026-01-20
+
+a33,Communicate,true,q9,2026-01-20,2026-01-20
+a34,Store Data,false,q9,2026-01-20,2026-01-20
+a35,Design UI,false,q9,2026-01-20,2026-01-20
+a36,Run OS,false,q9,2026-01-20,2026-01-20
+a37,On-demand Resources,true,q10,2026-01-20,2026-01-20
+a38,Manual Servers,false,q10,2026-01-20,2026-01-20
+a39,Local Storage,false,q10,2026-01-20,2026-01-20
+a40,Offline Apps,false,q10,2026-01-20,2026-01-20

@@ -1,11 +1,11 @@
-id,title,content,slug,category,tags,options,difficulty,views,upvotes,downvotes,isPublished,isFeatured,createdAt,updatedAt
-q1,What is the capital of France?,Select the correct capital city of France.,capital-of-france,Geography,"[Europe,Capital]","[Paris,Lyon,Marseille,Nice]",MEDIUM,0,0,0,true,false,2026-01-16T10:00:00Z,2026-01-16T10:00:00Z
-q2,What is the boiling point of water?,At what temperature in Celsius does water boil?,boiling-point-water,Science,"[Chemistry,Physics]","[90°C,100°C,110°C,120°C]",MEDIUM,0,0,0,true,false,2026-01-16T10:00:00Z,2026-01-16T10:00:00Z
-q3,Who wrote '1984'?,Identify the author of the book '1984'.,author-1984,Literature,"[Books,Dystopia]","[George Orwell,Aldous Huxley,Ray Bradbury,Mark Twain]",MEDIUM,0,0,0,true,false,2026-01-16T10:00:00Z,2026-01-16T10:00:00Z
-q4,What is the square root of 144?,Calculate the square root of 144.,sqrt-144,Math,"[Algebra,Numbers]","[10,11,12,13]",MEDIUM,0,0,0,true,false,2026-01-16T10:00:00Z,2026-01-16T10:00:00Z
-q5,Which planet is known as the Red Planet?,Select the correct planet.,red-planet,Science,"[Space,Planets]","[Earth,Mars,Jupiter,Venus]",MEDIUM,0,0,0,true,false,2026-01-16T10:00:00Z,2026-01-16T10:00:00Z
-q6,What is H2O commonly known as?,Give the common name for H2O.,h2o-common-name,Science,"[Chemistry,Water]","[Water,Oxygen,Hydrogen,Carbon Dioxide]",MEDIUM,0,0,0,true,false,2026-01-16T10:00:00Z,2026-01-16T10:00:00Z
-q7,Who painted the Mona Lisa?,Identify the famous painter.,mona-lisa-painter,Art,"[Renaissance,Painting]","[Leonardo da Vinci,Michelangelo,Raphael,Donatello]",MEDIUM,0,0,0,true,false,2026-01-16T10:00:00Z,2026-01-16T10:00:00Z
-q8,What is the largest ocean on Earth?,Select the correct ocean.,largest-ocean,Geography,"[Oceans,World]","[Atlantic,Indian,Pacific,Arctic]",MEDIUM,0,0,0,true,false,2026-01-16T10:00:00Z,2026-01-16T10:00:00Z
-q9,What gas do plants absorb from the atmosphere?,Select the gas absorbed by plants.,plants-absorb-gas,Science,"[Biology,Photosynthesis]","[Oxygen,Carbon Dioxide,Nitrogen,H2O]",MEDIUM,0,0,0,true,false,2026-01-16T10:00:00Z,2026-01-16T10:00:00Z
-q10,Which language is primarily spoken in Brazil?,Select the official language of Brazil.,language-brazil,Geography,"[Languages,World]","[Portuguese,Spanish,English,French]",MEDIUM,0,0,0,true,false,2026-01-16T10:00:00Z,2026-01-16T10:00:00Z
+"id","title","content","slug","category","tags","options","difficulty","views","upvotes","downvotes","isPublished","isFeatured","createdAt","updatedAt"
+"q1","What is JavaScript?","JavaScript is mainly used for what purpose?","what-is-javascript","Programming","javascript,web","Frontend,Backend,Database,OS","EASY","0","0","0","true","false","2026-01-20","2026-01-20"
+"q2","What is React?","React is a library mainly used for?","what-is-react","Frontend","react,frontend","UI,Database,Server,OS","EASY","0","0","0","true","false","2026-01-20","2026-01-20"
+"q3","What is Node.js?","Node.js allows JavaScript to run where?","what-is-nodejs","Backend","nodejs,javascript","Browser,Server,Mobile,Database","EASY","0","0","0","true","false","2026-01-20","2026-01-20"
+"q4","What is Prisma?","Prisma is mainly used for?","what-is-prisma","Backend","prisma,orm","ORM,Framework,Language,UI","MEDIUM","0","0","0","true","false","2026-01-20","2026-01-20"
+"q5","What is HTTP?","HTTP stands for?","what-is-http","Networking","http,network","HyperText Transfer Protocol,High Text Transfer Protocol,Hyper Tool Protocol,Host Transfer Protocol","EASY","0","0","0","true","false","2026-01-20","2026-01-20"
+"q6","What is JWT?","JWT is used for?","what-is-jwt","Security","jwt,auth","Authentication,Styling,Database,Logging","MEDIUM","0","0","0","true","false","2026-01-20","2026-01-20"
+"q7","What is SQL?","SQL is used to?","what-is-sql","Database","sql,database","Query Data,Design UI,Run Server,Create OS","EASY","0","0","0","true","false","2026-01-20","2026-01-20"
+"q8","What is Next.js?","Next.js is built on top of?","what-is-nextjs","Frontend","nextjs,react","React,Vue,Angular,Svelte","MEDIUM","0","0","0","true","false","2026-01-20","2026-01-20"
+"q9","What is API?","API allows systems to?","what-is-api","Backend","api,backend","Communicate,Store Data,Design UI,Run OS","EASY","0","0","0","true","false","2026-01-20","2026-01-20"
+"q10","What is Cloud Computing?","Cloud computing provides?","what-is-cloud-computing","Cloud","cloud,computing","On-demand Resources,Manual Servers,Local Storage,Offline Apps","MEDIUM","0","0","0","true","true","2026-01-20","2026-01-20"
