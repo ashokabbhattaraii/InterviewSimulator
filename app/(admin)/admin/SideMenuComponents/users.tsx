@@ -32,6 +32,7 @@ export default function User() {
       const res = await getUsers(page);
       return res;
     },
+    refetchInterval: 1000 * 60,
   });
 
   if (isLoading)
@@ -63,7 +64,7 @@ export default function User() {
         <tbody className=" ">
           {data?.user?.map((u, i) => {
             const updatedCreatedAt = new Date(
-              u.created_at
+              u.created_at,
             ).toLocaleDateString();
             return (
               <tr className="text-left hover:bg-slate-600/80 transition-colors ">

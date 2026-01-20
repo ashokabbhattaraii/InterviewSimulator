@@ -4,8 +4,22 @@ import { useForm } from "react-hook-form";
 import Questions from "./SideMenuComponents/questions";
 import User from "./SideMenuComponents/users";
 import createClient from "@/lib/client/client";
+import { signOut } from "@/app/(auth)/AuthActions/auth";
 import { useAuthStore } from "@/app/(auth)/store/userAuth";
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   LayoutDashboard,
   Users,
@@ -31,10 +45,12 @@ import {
 } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 const AdminDashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeTab, setActiveTab] = useState("dashboard");
   const [showAddForm, setShowAddForm] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     content: "",
@@ -89,7 +105,7 @@ const AdminDashboard = () => {
     (user?.user_metadata?.fname ?? "") +
     " " +
     (user?.user_metadata?.lname ?? "");
-
+  console.log(isProfileOpen);
   const handleInputChange = () => {};
 
   return (
@@ -163,17 +179,47 @@ const AdminDashboard = () => {
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
               </button>
 
-              <div className="flex items-center gap-3 pl-4 border-l border-white/10">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-sm font-bold">
-                  {user?.user_metadata.fname.charAt(0) +
-                    user?.user_metadata.lname.charAt(0)}
-                </div>
-                <div className="hidden md:block">
-                  <p className="text-sm font-medium text-white">{fullName}</p>
-                  <p className="text-xs text-slate-400">{user?.email} </p>
-                </div>
-                <ChevronDown size={16} className="text-slate-400" />
-              </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <div
+                    className="flex items-center gap-3 pl-4 border-l border-white/10 cursor-pointer"
+                    onClick={() => setIsProfileOpen(!isProfileOpen)}
+                  >
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-sm font-bold">
+                      {user?.user_metadata?.fname?.charAt(0) || ""}
+                      {user?.user_metadata?.lname?.charAt(0) || ""}
+                    </div>
+                    <ChevronDown size={16} className="text-slate-400" />
+                  </div>
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent className="bg-white text-black rounded shadow-lg">
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator></DropdownMenuSeparator>
+                  <DropdownMenuItem>
+                    <DropdownMenuLabel>{fullName}</DropdownMenuLabel>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <DropdownMenuLabel>{user?.email}</DropdownMenuLabel>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup className="flex justify-between">
+                    <DropdownMenuLabel>Account</DropdownMenuLabel>
+                    <Link href="/dashboard">
+                      <DropdownMenuLabel className="font-bold bg-slate-300 rounded-xl cursor-pointer">
+                        Dashboard
+                      </DropdownMenuLabel>
+                    </Link>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator></DropdownMenuSeparator>
+                  <DropdownMenuLabel
+                    className="cursor-pointer "
+                    onClick={() => signOut()}
+                  >
+                    LogOut
+                  </DropdownMenuLabel>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
         </header>

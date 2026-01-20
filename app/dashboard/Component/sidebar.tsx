@@ -13,6 +13,7 @@ import { useState } from "react";
 import DashboardHome from "./Menus/dashboardHome";
 import { signOut } from "@/app/(auth)/AuthActions/auth";
 import SettingsMenu from "./Menus/settings";
+import MockInterviews from "./Menus/mockInterviews";
 export default function SideBar() {
   const [selected, setSelected] = useState("dashboard");
   const [toogleMenu, setToogleMenu] = useState(false);
@@ -72,7 +73,7 @@ export default function SideBar() {
         </aside>
         <div className="flex pt-22">
           {selected == "dashboard" && <DashboardHome></DashboardHome>}
-          {selected == "mock interviews" && <DashboardHome></DashboardHome>}
+          {selected == "mock interviews" && <MockInterviews></MockInterviews>}
           {selected == "profile" && <DashboardHome></DashboardHome>}
           {selected == "feedback" && <DashboardHome></DashboardHome>}
           {selected == "settings" && <SettingsMenu></SettingsMenu>}

@@ -78,7 +78,7 @@ export async function getUsers(page: number) {
           return cookieStore.get(name)?.value;
         },
       },
-    }
+    },
   );
 
   // Fetch users from Supabase Auth

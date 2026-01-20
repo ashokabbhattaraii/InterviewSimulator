@@ -9,7 +9,7 @@ export default function Nav() {
     <>
       <div
         id="nav"
-        className="fixed top-0 left-0 bg-slate-900 flex items-center w-full"
+        className="fixed z-100 top-0 left-0 bg-slate-900 flex items-center w-full"
       >
         <div id="logo" className="ml-6 hover:scale-105 cursor-pointer ">
           <Image src="/logo.png" width={80} height={80} alt="logo"></Image>

@@ -1,3 +1,4 @@
+"use server";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 
@@ -14,13 +15,13 @@ export async function createClient() {
         setAll(cookiesToSet) {
           try {
             cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options)
+              cookieStore.set(name, value, options),
             );
           } catch (error) {
             console.log("Failed to update cookies", error);
           }
         },
       },
-    }
+    },
   );
 }

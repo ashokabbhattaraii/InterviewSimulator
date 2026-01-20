@@ -2,6 +2,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { usePathname } from "next/navigation";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 import "./globals.css";
 import NavBar from "./(public)/components/navabr/navbar";
 const geistSans = Geist({
@@ -19,6 +21,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const clientQuery = new QueryClient();
   const pathname = usePathname();
   const isDashbaord = pathname.startsWith("/dashboard");
   const isAdmin = pathname.startsWith("/admin");
@@ -28,7 +31,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {!isDashbaord && !isAdmin && <NavBar />}
-        {children}
+        <QueryClientProvider client={clientQuery}>
+          {children}
+        </QueryClientProvider>
       </body>
     </html>
   );

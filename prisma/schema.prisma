@@ -16,13 +16,14 @@ datasource db {
 
 
 model Question {
-  id String @id @default(cuid())
+  id String @id 
   title String
   content String 
   slug  String  @unique
 
   category  String?
   tags  String[]
+  options String[]
   difficulty  Difficulty @default(MEDIUM)
 
   //Engagement
