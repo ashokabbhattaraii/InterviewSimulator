@@ -12,6 +12,7 @@ export default function MockInterviews() {
       description: "Multiple choice questions to test your knowledge",
       duration: "50+ Questions",
       arrowColor: "text-blue-400",
+      comingSoon: false,
     },
     {
       href: "/dashboard/mock-interviews/behavioral",
@@ -22,6 +23,7 @@ export default function MockInterviews() {
       description: "Practice answering behavioral questions with STAR method",
       duration: "30 min session",
       arrowColor: "text-purple-400",
+      comingSoon: true,
     },
     {
       href: "/dashboard/mock-interviews/coding",
@@ -32,6 +34,7 @@ export default function MockInterviews() {
       description: "Solve coding problems and algorithms",
       duration: "45 min session",
       arrowColor: "text-green-400",
+      comingSoon: true,
     },
     {
       href: "/dashboard/mock-interviews/system-design",
@@ -42,6 +45,7 @@ export default function MockInterviews() {
       description: "Design scalable systems and architectures",
       duration: "60 min session",
       arrowColor: "text-amber-400",
+      comingSoon: true,
     },
     {
       href: "/dashboard/mock-interviews/video",
@@ -52,6 +56,7 @@ export default function MockInterviews() {
       description: "Practice with AI-powered video interview simulation",
       duration: "Live session",
       arrowColor: "text-pink-400",
+      comingSoon: true,
     },
     {
       href: "/dashboard/mock-interviews/custom",
@@ -62,6 +67,7 @@ export default function MockInterviews() {
       description: "Create your own personalized interview session",
       duration: "Flexible",
       arrowColor: "text-cyan-400",
+      comingSoon: true,
     },
   ];
 
@@ -76,53 +82,109 @@ export default function MockInterviews() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {interviewTypes.map((interview) => (
-          <Link
-            key={interview.href}
-            href={interview.href}
-            className={`bg-slate-800/50 backdrop-blur-xl rounded-2xl p-6 border border-slate-700/50 ${interview.hoverBorder} transition-all cursor-pointer group block`}
-          >
-            <div
-              className={`w-14 h-14 bg-gradient-to-br ${interview.gradient} rounded-xl flex items-center justify-center mb-4`}
-            >
-              <svg
-                className="w-7 h-7 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+          <div key={interview.href} className="relative">
+            {interview.comingSoon ? (
+              <div
+                className={`bg-slate-800/50 backdrop-blur-xl rounded-2xl p-6 border border-slate-700/50 ${interview.hoverBorder} transition-all cursor-not-allowed block opacity-60`}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d={interview.icon}
-                />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold text-white mb-2">
-              {interview.title}
-            </h3>
-            <p className="text-slate-400 text-sm mb-4">
-              {interview.description}
-            </p>
-            <div className="flex items-center justify-between pt-4 border-t border-slate-700">
-              <span className="text-xs text-slate-500">
-                {interview.duration}
-              </span>
-              <svg
-                className={`w-5 h-5 ${interview.arrowColor} group-hover:translate-x-1 transition-transform`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+                <div
+                  className={`w-14 h-14 bg-gradient-to-br ${interview.gradient} rounded-xl flex items-center justify-center mb-4`}
+                >
+                  <svg
+                    className="w-7 h-7 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d={interview.icon}
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">
+                  {interview.title}
+                </h3>
+                <p className="text-slate-400 text-sm mb-4">
+                  {interview.description}
+                </p>
+                <div className="flex items-center justify-between pt-4 border-t border-slate-700">
+                  <span className="text-xs text-slate-500">
+                    {interview.duration}
+                  </span>
+                  <svg
+                    className={`w-5 h-5 ${interview.arrowColor}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </div>
+              </div>
+            ) : (
+              <Link
+                href={interview.href}
+                className={`bg-slate-800/50 backdrop-blur-xl rounded-2xl p-6 border border-slate-700/50 ${interview.hoverBorder} transition-all cursor-pointer group block`}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </div>
-          </Link>
+                <div
+                  className={`w-14 h-14 bg-gradient-to-br ${interview.gradient} rounded-xl flex items-center justify-center mb-4`}
+                >
+                  <svg
+                    className="w-7 h-7 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d={interview.icon}
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">
+                  {interview.title}
+                </h3>
+                <p className="text-slate-400 text-sm mb-4">
+                  {interview.description}
+                </p>
+                <div className="flex items-center justify-between pt-4 border-t border-slate-700">
+                  <span className="text-xs text-slate-500">
+                    {interview.duration}
+                  </span>
+                  <svg
+                    className={`w-5 h-5 ${interview.arrowColor} group-hover:translate-x-1 transition-transform`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </div>
+              </Link>
+            )}
+            {interview.comingSoon && (
+              <div className="absolute top-4 right-4 bg-amber-500/20 border border-amber-500/50 rounded-lg px-3 py-1">
+                <span className="text-amber-400 text-xs font-semibold">
+                  Coming Soon
+                </span>
+              </div>
+            )}
+          </div>
         ))}
       </div>
 

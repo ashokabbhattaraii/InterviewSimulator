@@ -120,9 +120,11 @@ export async function AddUser(formData: user) {
     email: formData.email,
     password: formData.password,
     user_metadata: {
-      role: formData.role,
       firstName: formData.firstName,
       lastName: formData.lastName,
+    },
+    app_metadata: {
+      role: formData.role,
     },
   });
 

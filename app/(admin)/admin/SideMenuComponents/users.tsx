@@ -92,7 +92,7 @@ export default function User() {
                 <td>{updatedCreatedAt}</td>
                 <td className="flex justify-center items-center">
                   <span className="  px-3 py-2 rounded-2xl bg-blue-600 hover:bg-blue-800 flex justify-center items-center mt-2">
-                    {u.user_metadata.role}
+                    {u.app_metadata.role}
                   </span>
                 </td>
                 <td className="">

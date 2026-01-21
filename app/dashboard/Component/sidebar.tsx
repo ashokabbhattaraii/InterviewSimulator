@@ -16,7 +16,7 @@ import SettingsMenu from "./Menus/settings";
 import MockInterviews from "./Menus/mockInterviews";
 export default function SideBar() {
   const [selected, setSelected] = useState("dashboard");
-  const [toogleMenu, setToogleMenu] = useState(false);
+  const [toogleMenu, setToogleMenu] = useState(true);
   const options = [
     { name: "Dashboard", icon: <Home></Home> },
     { name: "Mock Interviews", icon: <Mic></Mic> },

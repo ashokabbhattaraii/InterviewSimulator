@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-
+import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { useCountDown } from "@/app/(public)/hooks/timer";
 import useQuestion from "@/app/(public)/hooks/question";
@@ -17,14 +17,19 @@ export default function MCQInterview() {
   const { secondsLeft, minutes, seconds, start, reset } = useCountDown({
     initialSeconds: 5,
   });
+  const router = useRouter();
   const { isSubmitted, setIsSubmitted } = useValidateContext();
   const [currentIndex, setCurrentIndex] = useState(0);
-  function manageQns(btnType: "prev" | "next") {
+  function manageQns(btnType: "prev" | "next" | "submit") {
     if (btnType == "next") {
       reset();
       setCurrentIndex((next) => next + 1);
+
       start();
       setIsSubmitted(false);
+    } else if (btnType == "submit") {
+      console.log("Submitting quiz, navigating to result...");
+      router.push("/dashboard/mock-interviews/mcq/result");
     } else {
       reset();
       setCurrentIndex((prev) => prev - 1);
@@ -116,9 +121,12 @@ export default function MCQInterview() {
           </button>
 
           <button
-            disabled={currentIndex == qnsLength - 1}
             className="px-6 py-3 bg-linear-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-blue-600 transition-all shadow-lg cursor-pointer "
-            onClick={() => manageQns("next")}
+            onClick={() =>
+              currentIndex == qnsLength - 1
+                ? manageQns("submit")
+                : manageQns("next")
+            }
           >
             {currentIndex == qnsLength - 1 ? "Submit" : "Next"}
           </button>

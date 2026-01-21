@@ -106,7 +106,7 @@ const AdminDashboard = () => {
     " " +
     (user?.user_metadata?.lname ?? "");
   console.log(isProfileOpen);
-  const handleInputChange = () => {};
+
 
   return (
     <div className="min-h-screen bg-black">
