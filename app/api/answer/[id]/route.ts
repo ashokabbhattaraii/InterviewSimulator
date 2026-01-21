@@ -1,13 +1,15 @@
 "use server";
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { error } from "console";
 
-export async function GET() {
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  const qnsId = (await params).id;
   try {
-    const questionId = "q1";
-    const questionWithAnswers = await prisma.Question.findUnique({
-      where: { id: questionId },
+    const questionWithAnswers = await prisma.question.findUnique({
+      where: { id: qnsId },
       include: {
         answers: true,
       },

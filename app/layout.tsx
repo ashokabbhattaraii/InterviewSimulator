@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { usePathname } from "next/navigation";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
+import { ContextProvider } from "./dashboard/Context/ValidateContext";
 import "./globals.css";
 import NavBar from "./(public)/components/navabr/navbar";
 const geistSans = Geist({
@@ -32,7 +32,7 @@ export default function RootLayout({
       >
         {!isDashbaord && !isAdmin && <NavBar />}
         <QueryClientProvider client={clientQuery}>
-          {children}
+          <ContextProvider>{children}</ContextProvider>
         </QueryClientProvider>
       </body>
     </html>

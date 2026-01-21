@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useCountDown } from "@/app/(public)/hooks/timer";
 import useQuestion from "@/app/(public)/hooks/question";
 import Quest from "./questionComponent";
-
+import { useValidateContext } from "../../Context/ValidateContext";
 interface QuestionProps {
   title: string;
   content: string;
@@ -17,16 +17,19 @@ export default function MCQInterview() {
   const { secondsLeft, minutes, seconds, start, reset } = useCountDown({
     initialSeconds: 5,
   });
+  const { isSubmitted, setIsSubmitted } = useValidateContext();
   const [currentIndex, setCurrentIndex] = useState(0);
   function manageQns(btnType: "prev" | "next") {
     if (btnType == "next") {
       reset();
       setCurrentIndex((next) => next + 1);
       start();
+      setIsSubmitted(false);
     } else {
       reset();
       setCurrentIndex((prev) => prev - 1);
       start();
+      setIsSubmitted(false);
     }
   }
   let firstQn;
