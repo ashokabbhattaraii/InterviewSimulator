@@ -186,8 +186,8 @@ const AdminDashboard = () => {
                     onClick={() => setIsProfileOpen(!isProfileOpen)}
                   >
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-sm font-bold">
-                      {user?.user_metadata?.fname?.charAt(0) || ""}
-                      {user?.user_metadata?.lname?.charAt(0) || ""}
+                      {user?.user_metadata?.firstName?.charAt(0) || ""}
+                      {user?.user_metadata?.lastName?.charAt(0) || ""}
                     </div>
                     <ChevronDown size={16} className="text-slate-400" />
                   </div>

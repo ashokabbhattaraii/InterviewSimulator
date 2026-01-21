@@ -8,15 +8,14 @@ import Link from "next/link";
 import { useAuthStore } from "@/app/(auth)/store/userAuth";
 import { signIn } from "@/app/(auth)/AuthActions/auth";
 import { redirect } from "next/navigation";
-
+import { useState } from "react";
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(1, "Password is required"),
 });
 
-type LoginFormData = z.infer<typeof loginSchema>;
-
 export default function Login() {
+  type LoginFormData = z.infer<typeof loginSchema>;
   const router = useRouter();
   const {
     register,
@@ -26,13 +25,17 @@ export default function Login() {
     resolver: zodResolver(loginSchema),
   });
   const { setUser } = useAuthStore();
+  const [errorMsg, setError] = useState("");
   const onSubmit = async (data: LoginFormData) => {
-    try {
-      await signIn(data);
-      setUser(data);
-      router.push("/dashboard");
-    } catch (error) {
-      console.error("Login failed", error);
+    setError("");
+    const res = await signIn(data);
+
+    if (res?.success) {
+      setUser(res.user);
+      router.push(res.redirect || "/dashboard");
+    } else {
+      setError(res?.message || "An error occurred");
+      console.log("Login error:", res?.message);
     }
   };
 
@@ -107,6 +110,7 @@ export default function Login() {
               </span>
             )}
           </div>
+          {errorMsg && <p className="text-red-400 text-sm ml-1">{errorMsg}</p>}
 
           <button
             type="submit"

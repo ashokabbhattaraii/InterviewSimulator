@@ -1,9 +1,23 @@
+"use client";
+import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 interface QuestionProps {
   title: string;
   content: string;
   id: string;
   index: number;
   options?: string[] | null;
+}
+
+interface Answer {
+  id: string;
+  text: string;
+  isCorrect: boolean;
+}
+interface Question {
+  id: string;
+  title: string;
+  answers: Answer[];
 }
 export default function Quest({
   title,
@@ -19,6 +33,17 @@ export default function Quest({
   console.log("from each qns", id);
   console.log("option each qns", parsedOptions);
 
+  const { data, isFetching, isLoading } = useQuery<Question>({
+    queryKey: ["answer", id],
+    queryFn: async () => {
+      const res = await fetch("/dashboard/fetch/qnsAns");
+      if (!res.ok) {
+        throw new Error("Failed to fetch");
+      }
+      return res.json();
+    },
+  });
+  console.log("Qns and", data);
   return (
     <div className="bg-slate-800/50 backdrop-blur-xl rounded-2xl p-8 border border-slate-700/50 mb-6">
       <div className="flex items-start gap-4 mb-6">

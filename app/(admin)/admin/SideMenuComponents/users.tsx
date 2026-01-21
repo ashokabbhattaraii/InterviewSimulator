@@ -1,10 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getUsers } from "@/app/(auth)/AuthActions/auth";
-import { useQuery } from "@tanstack/react-query";
+import { AddUser, getUsers } from "@/app/(auth)/AuthActions/auth";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { Loader2, ArrowLeft, ArrowRight, Edit, Trash } from "lucide-react";
 import { fa } from "zod/locales";
-
+import AddUserForm from "../Form/Form";
+import { useFormContext } from "../Context";
 interface userType {
   id: string;
   fname?: string;
@@ -16,6 +17,7 @@ interface GetUsersResponse {
 }
 export default function User() {
   const [page, setPage] = useState(1);
+  const { isAddUserFormOpen, setIsAddUserFormOpen } = useFormContext();
   const [isDisabled, setIsDisabled] = useState(false);
   function managePage(direction: "next" | "prev") {
     if (direction == "next") {
@@ -32,6 +34,7 @@ export default function User() {
       const res = await getUsers(page);
       return res;
     },
+
     refetchInterval: 1000 * 60,
   });
 
@@ -45,9 +48,22 @@ export default function User() {
   if (error) return <p>Error fetching users</p>;
   return (
     <div className="p-6 text-white">
-      <h1 className="text-xl font-bold mb-4 bg-gradient-to-r from-blue-800 to-purple-400 text-transparent  bg-clip-text">
-        Manage Users
-      </h1>
+      <div className="flex justify-between my-2">
+        <h1 className="text-xl font-bold mb-4 bg-gradient-to-r from-blue-800 to-purple-400 text-transparent  bg-clip-text">
+          Manage Users
+        </h1>
+        <button
+          className="px-3 py-3 bg-purple-600 rounded-xl font-bold cursor-pointer hover:scale-105 transition-all ease-in-out duration-200 shadow shadow-purple-700"
+          onClick={() => setIsAddUserFormOpen(!isAddUserFormOpen)}
+        >
+          Add Users
+        </button>
+      </div>
+      {isAddUserFormOpen && (
+        <div className="fixed z-1000">
+          <AddUserForm></AddUserForm>
+        </div>
+      )}
       <table className="w-full border border-spacing-0   rounded-2xl border-separate overflow-hidden bg-slate-500/20 border-gray-700  ">
         <thead className="   bg-blue-900/20 text-blue-400">
           <tr className=" ">
@@ -69,8 +85,8 @@ export default function User() {
             return (
               <tr className="text-left hover:bg-slate-600/80 transition-colors ">
                 <td className="text-center py-4 px-3">{i + 1}</td>
-                <td>{u.user_metadata.fname}</td>
-                <td>{u.user_metadata.lname}</td>
+                <td>{u.user_metadata.firstName}</td>
+                <td>{u.user_metadata.lastName}</td>
                 <td>{u.user_metadata.username}</td>
                 <td>{u.email}</td>
                 <td>{updatedCreatedAt}</td>

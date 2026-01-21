@@ -38,6 +38,7 @@ export async function proxy(request: NextRequest) {
       const redirectTo = user.email === ADMIN_EMAIL ? "/admin" : "/dashboard";
       const url = request.nextUrl.clone();
       url.pathname = redirectTo;
+
       return NextResponse.redirect(url);
     }
     return NextResponse.next();

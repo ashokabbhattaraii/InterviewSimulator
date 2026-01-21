@@ -7,6 +7,7 @@ import { signUp } from "@/app/(auth)/AuthActions/auth";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
+import { error } from "console";
 const registerSchema = z
   .object({
     firstName: z.string().min(2, "Required"),
@@ -32,13 +33,15 @@ export default function Register() {
     resolver: zodResolver(registerSchema),
   });
   const [isRegistering, setIsRegistering] = useState(false);
-
+  const [registerError, setRegisterError] = useState("");
   async function onSubmit(data: RegisterFormData) {
     console.log("Form data valid and submitted:", data);
     setIsRegistering(true);
     const regStatus = await signUp(data);
     if (regStatus.success !== true) {
       setIsRegistering(false);
+      setRegisterError(regStatus?.message || "Failed to register");
+    } else {
     }
   }
 
@@ -198,7 +201,7 @@ export default function Register() {
               )}
             </div>
           </div>
-
+          {registerError && <p className="text-red-400">{registerError}</p>}
           <button
             type="submit"
             disabled={isRegistering}
