@@ -56,14 +56,24 @@ export default function Info() {
         </motion.div>
         <motion.div
           animate={{ y: [0, 20, 0] }}
-          transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 1 }}
+          transition={{
+            repeat: Infinity,
+            duration: 5,
+            ease: "easeInOut",
+            delay: 1,
+          }}
           className="absolute bottom-40 right-[10%] text-secondary/40"
         >
           <Code size={48} />
         </motion.div>
         <motion.div
           animate={{ y: [0, -15, 0] }}
-          transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut", delay: 0.5 }}
+          transition={{
+            repeat: Infinity,
+            duration: 4.5,
+            ease: "easeInOut",
+            delay: 0.5,
+          }}
           className="absolute top-40 right-[20%] text-muted-foreground/20"
         >
           <MessageSquare size={40} />
@@ -76,10 +86,10 @@ export default function Info() {
         initial="hidden"
         animate="visible"
       >
-        <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-6 text-sm md:text-base text-muted-foreground">
-          <Sparkles className="w-4 h-4 text-secondary" />
-          <span>AI-Powered Interview Practice</span>
-        </motion.div>
+        <motion.div
+          variants={itemVariants}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full  backdrop-blur-sm   mb-6 text-sm md:text-base text-muted-foreground"
+        ></motion.div>
 
         <motion.h1
           variants={itemVariants}
@@ -95,7 +105,8 @@ export default function Info() {
           variants={itemVariants}
           className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-2xl mx-auto"
         >
-          Experience realistic mock interviews tailored to your role. Get instant feedback, improve your answers, and land your dream job.
+          Experience realistic mock interviews tailored to your role. Get
+          instant feedback, improve your answers, and land your dream job.
         </motion.p>
 
         <motion.div
@@ -109,7 +120,7 @@ export default function Info() {
               onClick={() => handleOperation()}
               className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 text-lg rounded-xl shadow-lg shadow-primary/25 flex items-center gap-2"
             >
-             {/* Note: The Button component might not accept children or className if strictly typed, checking its definition next. 
+              {/* Note: The Button component might not accept children or className if strictly typed, checking its definition next. 
                  If it doesn't support children, I will rely on 'text' prop. 
                  Wait, I see the usage: <Button text="..." ...></Button>. 
                  Let's assume standard usage first or check Button definition.

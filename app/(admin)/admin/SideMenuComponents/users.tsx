@@ -19,6 +19,8 @@ export default function User() {
   const [page, setPage] = useState(1);
   const { isAddUserFormOpen, setIsAddUserFormOpen } = useFormContext();
   const [isDisabled, setIsDisabled] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [userIdToDelete, setUserIdToDelete] = useState<string | null>(null);
   function managePage(direction: "next" | "prev") {
     if (direction == "next") {
       setPage((old) => old + 1);
@@ -37,6 +39,26 @@ export default function User() {
 
     refetchInterval: 1000 * 60,
   });
+  function handleDelete(userId: string) {
+    setUserIdToDelete(userId);
+    setIsDeleteDialogOpen(true);
+  }
+  async function confirmDelete(userId: string) {
+    const res = await fetch("/api/delete", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId }),
+    });
+    const data = await res.json();
+    if (data.success) {
+      alert("User deleted successfully");
+      refetch();
+    } else {
+      alert("Error deleting user");
+    }
+  }
 
   if (isLoading)
     return (
@@ -99,7 +121,7 @@ export default function User() {
                   <div className="flex justify-center items-center gap-2 text-muted-foreground hover:text-foreground">
                     {" "}
                     <Edit></Edit>
-                    <Trash></Trash>
+                    <Trash onClick={() => handleDelete(u.id)}></Trash>
                   </div>
                 </td>
               </tr>
@@ -132,6 +154,35 @@ export default function User() {
           ></ArrowRight>
         </button>
       </div>
+      {isDeleteDialogOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-card p-6 rounded-lg shadow-lg">
+            <h2 className="text-lg font-bold mb-4 text-foreground">
+              Confirm Deletion
+            </h2>
+            <p className="mb-4 text-foreground">
+              Are you sure you want to delete this user?
+            </p>
+            <div className="flex justify-end gap-4">
+              <button
+                className="px-4 py-2 bg-muted text-foreground rounded hover:bg-muted/90"
+                onClick={() => setIsDeleteDialogOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                onClick={() => {
+                  confirmDelete(userIdToDelete!);
+                  setIsDeleteDialogOpen(false);
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

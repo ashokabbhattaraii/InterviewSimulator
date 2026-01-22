@@ -1,13 +1,18 @@
 "use client";
+import { link } from "fs";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function NavBar() {
-  const navOptions = ["Home", "About Us", "Features"];
+  const navOptions = [
+    { li: "Home", link: "/" },
+    { li: "About Us", link: "#about" },
+    { li: "Features", link: "#features" },
+  ];
 
   return (
     <>
-      <nav className="fixed  justify-center items-center bg-primary w-full flex text-primary-foreground shadow-lg shadow-primary/20 outline-0 z-50">
+      <nav className="fixed  justify-center  items-center bg-primary w-full flex text-white text-xl shadow-lg shadow-primary/20 outline-0 z-50 ">
         <div id="logo" className="ml-6 hover:scale-105 cursor-pointer">
           <Image src="/logo.png" width={80} height={80} alt="logo"></Image>
         </div>
@@ -17,10 +22,11 @@ export default function NavBar() {
               {navOptions.map((option, index) => {
                 return (
                   <li
+                    onClick={() => (window.location.href = option.link)}
                     key={index}
                     className="hover:text-secondary cursor-pointer text-[1.1em] px-3 py-2 transition-colors"
                   >
-                    {option}
+                    {option.li}
                   </li>
                 );
               })}
