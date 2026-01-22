@@ -10,6 +10,10 @@ interface ValidateContextType {
   setCorrectCount: (value: number) => void;
   inncorrectCount: number;
   setInncorrectCount: (value: number) => void;
+  difficultyLevel: string;
+  isDifficultySelected: boolean;
+  setIsDifficultySelected: (value: boolean) => void;
+  setDifficultyLevel: (level: string) => void;
 }
 
 // Create the context
@@ -26,6 +30,8 @@ export const ContextProvider = ({ children }: ContextProviderProps) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [correctCount, setCorrectCount] = useState(0);
   const [inncorrectCount, setInncorrectCount] = useState(0);
+  const [difficultyLevel, setDifficultyLevel] = useState("");
+  const [isDifficultySelected, setIsDifficultySelected] = useState(false);
 
   return (
     <ValidateContext.Provider
@@ -38,6 +44,10 @@ export const ContextProvider = ({ children }: ContextProviderProps) => {
         setCorrectCount,
         inncorrectCount,
         setInncorrectCount,
+        difficultyLevel,
+        setDifficultyLevel,
+        isDifficultySelected,
+        setIsDifficultySelected,
       }}
     >
       {children}

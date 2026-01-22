@@ -57,14 +57,14 @@ export default function AddUserForm() {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-xs flex justify-center items-center p-4 overflow-y-auto">
-      <div className="w-full max-w-3xl bg-slate-800/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 overflow-hidden">
-        <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-slate-800 p-5 text-center relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-transparent"></div>
-          <h1 className="text-2xl font-bold text-white relative z-10">
+    <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex justify-center items-center p-4 overflow-y-auto z-50">
+      <div className="w-full max-w-3xl bg-card backdrop-blur-xl rounded-2xl shadow-2xl border border-border overflow-hidden">
+        <div className="bg-primary p-5 text-center relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
+          <h1 className="text-2xl font-bold text-primary-foreground relative z-10">
             Add New User
           </h1>
-          <p className="text-blue-200 mt-1 text-xs relative z-10">
+          <p className="text-primary-foreground/80 mt-1 text-xs relative z-10">
             Fill in the details to create a new user
           </p>
         </div>
@@ -74,141 +74,138 @@ export default function AddUserForm() {
           className="p-6 grid grid-cols-2 gap-4"
         >
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-semibold text-slate-300">
+            <label className="text-xs font-semibold text-muted-foreground">
               First Name
             </label>
             <input
               {...register("firstName")}
-              className="px-3 py-2 rounded-lg bg-slate-900/50 border border-slate-600 text-white text-sm focus:ring-2 focus:ring-blue-500"
+              className="px-3 py-2 rounded-lg bg-muted/50 border border-border text-foreground text-sm focus:ring-2 focus:ring-primary focus:outline-none placeholder:text-muted-foreground"
               placeholder="John"
             />
             {errors.firstName && (
-              <span className="text-red-400 text-xs">
+              <span className="text-destructive text-xs">
                 {errors.firstName.message}
               </span>
             )}
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-semibold text-slate-300">
+            <label className="text-xs font-semibold text-muted-foreground">
               Last Name
             </label>
             <input
               {...register("lastName")}
-              className="px-3 py-2 rounded-lg bg-slate-900/50 border border-slate-600 text-white text-sm focus:ring-2 focus:ring-blue-500"
+              className="px-3 py-2 rounded-lg bg-muted/50 border border-border text-foreground text-sm focus:ring-2 focus:ring-primary focus:outline-none placeholder:text-muted-foreground"
               placeholder="Doe"
             />
             {errors.lastName && (
-              <span className="text-red-400 text-xs">
+              <span className="text-destructive text-xs">
                 {errors.lastName.message}
               </span>
             )}
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-semibold text-slate-300">
+            <label className="text-xs font-semibold text-muted-foreground">
               Username
             </label>
             <input
               {...register("username")}
-              className="px-3 py-2 rounded-lg bg-slate-900/50 border border-slate-600 text-white text-sm focus:ring-2 focus:ring-blue-500"
-              placeholder="johndoe"
+              className="px-3 py-2 rounded-lg bg-muted/50 border border-border text-foreground text-sm focus:ring-2 focus:ring-primary focus:outline-none placeholder:text-muted-foreground"
+              placeholder="johndoe123"
             />
             {errors.username && (
-              <span className="text-red-400 text-xs">
+              <span className="text-destructive text-xs">
                 {errors.username.message}
               </span>
             )}
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-semibold text-slate-300">
+            <label className="text-xs font-semibold text-muted-foreground">
               Email Address
             </label>
             <input
               {...register("email")}
-              type="email"
-              className="px-3 py-2 rounded-lg bg-slate-900/50 border border-slate-600 text-white text-sm focus:ring-2 focus:ring-blue-500"
-              placeholder="name@gmail.com"
+              className="px-3 py-2 rounded-lg bg-muted/50 border border-border text-foreground text-sm focus:ring-2 focus:ring-primary focus:outline-none placeholder:text-muted-foreground"
+              placeholder="john@example.com"
             />
             {errors.email && (
-              <span className="text-red-400 text-xs">
+              <span className="text-destructive text-xs">
                 {errors.email.message}
               </span>
             )}
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-semibold text-slate-300">
+            <label className="text-xs font-semibold text-muted-foreground">
               Password
             </label>
             <input
-              {...register("password")}
               type="password"
-              className="px-3 py-2 rounded-lg bg-slate-900/50 border border-slate-600 text-white text-sm focus:ring-2 focus:ring-blue-500"
+              {...register("password")}
+              className="px-3 py-2 rounded-lg bg-muted/50 border border-border text-foreground text-sm focus:ring-2 focus:ring-primary focus:outline-none placeholder:text-muted-foreground"
               placeholder="••••••••"
             />
             {errors.password && (
-              <span className="text-red-400 text-xs">
+              <span className="text-destructive text-xs">
                 {errors.password.message}
               </span>
             )}
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-semibold text-slate-300">
+            <label className="text-xs font-semibold text-muted-foreground">
               Confirm Password
             </label>
             <input
-              {...register("confirmPassword")}
               type="password"
-              className="px-3 py-2 rounded-lg bg-slate-900/50 border border-slate-600 text-white text-sm focus:ring-2 focus:ring-blue-500"
+              {...register("confirmPassword")}
+              className="px-3 py-2 rounded-lg bg-muted/50 border border-border text-foreground text-sm focus:ring-2 focus:ring-primary focus:outline-none placeholder:text-muted-foreground"
               placeholder="••••••••"
             />
             {errors.confirmPassword && (
-              <span className="text-red-400 text-xs">
+              <span className="text-destructive text-xs">
                 {errors.confirmPassword.message}
               </span>
             )}
           </div>
 
           <div className="flex flex-col gap-1 col-span-2">
-            <label className="text-xs font-semibold text-slate-300">Role</label>
+            <label className="text-xs font-semibold text-muted-foreground">
+              Role
+            </label>
             <select
               {...register("role")}
-              className="px-3 py-2 rounded-lg bg-slate-900/50 border border-slate-600 text-white text-sm focus:ring-2 focus:ring-blue-500"
+              className="px-3 py-2 rounded-lg bg-muted/50 border border-border text-foreground text-sm focus:ring-2 focus:ring-primary focus:outline-none"
             >
-              <option value="">Select a role</option>
-              <option value="admin">Admin</option>
+              <option value="" disabled selected>
+                Select a role
+              </option>
               <option value="user">User</option>
+              <option value="admin">Admin</option>
               <option value="moderator">Moderator</option>
             </select>
             {errors.role && (
-              <span className="text-red-400 text-xs">
+              <span className="text-destructive text-xs">
                 {errors.role.message}
               </span>
             )}
           </div>
 
-          {addUserError && (
-            <div className="col-span-2 bg-red-500/20 border border-red-500/50 rounded-lg p-2">
-              <p className="text-red-400 text-xs">{addUserError}</p>
-            </div>
-          )}
-
-          <div className="col-span-2 flex gap-3 mt-2">
-            <button
-              type="submit"
-              className="flex-1 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold text-sm rounded-lg hover:from-blue-500 hover:to-blue-600 transition-all shadow-lg"
-            >
-              Add User
-            </button>
+          <div className="col-span-2 flex justify-end gap-3 mt-4 pt-4 border-t border-border">
             <button
               type="button"
-              onClick={() => setIsAddUserFormOpen(!isAddUserFormOpen)}
-              className="flex-1 py-2 bg-slate-700 text-slate-200 font-bold text-sm rounded-lg hover:bg-slate-600 transition-all"
+              onClick={() => setIsAddUserFormOpen(false)}
+              className="px-4 py-2 rounded-lg bg-muted text-muted-foreground text-sm font-semibold hover:bg-muted/80 transition-all"
             >
               Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all"
+            >
+              Add User
             </button>
           </div>
         </form>

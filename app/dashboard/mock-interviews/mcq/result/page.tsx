@@ -13,8 +13,8 @@ export default function Result() {
         data: { user },
       } = await supabase.auth.getUser();
       console.log(typeof user);
-      setUser(user);
       console.log(typeof user, user);
+      setUser(user);
     }
     saveUser();
     console.log("Logged in from dashboard", user, typeof user);
@@ -28,9 +28,9 @@ export default function Result() {
   const firstName = user?.user_metadata?.firstName || "User";
 
   const getPerformanceColor = () => {
-    if (percentage >= 80) return "text-green-400";
-    if (percentage >= 60) return "text-yellow-400";
-    return "text-red-400";
+    if (percentage >= 80) return "text-green-600";
+    if (percentage >= 60) return "text-yellow-600";
+    return "text-red-600";
   };
 
   const getPerformanceMessage = () => {
@@ -40,10 +40,10 @@ export default function Result() {
   };
   if (!isSubmitted) return router.replace("/404");
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4 flex items-center justify-center">
+    <div className="min-h-screen bg-background p-4 flex items-center justify-center">
       <button
         onClick={() => router.push("/dashboard")}
-        className="absolute top-6 left-6 flex items-center gap-2 text-slate-400 hover:text-white transition-colors cursor-pointer"
+        className="absolute top-6 left-6 flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
       >
         <svg
           className="w-5 h-5"
@@ -62,22 +62,22 @@ export default function Result() {
       </button>
 
       <div className="w-full max-w-2xl">
-        <div className="bg-slate-800/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-700/50 overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-6 text-center relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-transparent"></div>
-            <h1 className="text-3xl font-bold text-white relative z-10">
+        <div className="bg-card backdrop-blur-xl rounded-3xl shadow-2xl border border-border overflow-hidden">
+          <div className="bg-primary p-6 text-center relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
+            <h1 className="text-3xl font-bold text-primary-foreground relative z-10">
               Quiz Complete!
             </h1>
-            <p className="text-blue-200 mt-1 text-sm relative z-10">
+            <p className="text-primary-foreground/80 mt-1 text-sm relative z-10">
               Here's how you performed
             </p>
           </div>
 
           <div className="px-8 py-6 space-y-6">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-blue-400">
+              <h2 className="text-2xl font-bold text-primary">
                 Congratulations,{" "}
-                <span className="text-white">
+                <span className="text-foreground">
                   {user?.user_metadata.firstName}
                 </span>
                 ! 🎉
@@ -95,15 +95,16 @@ export default function Result() {
                     cy="100"
                     r="90"
                     fill="none"
-                    stroke="#334155"
+                    stroke="currentColor"
                     strokeWidth="8"
+                    className="text-muted"
                   />
                   <circle
                     cx="100"
                     cy="100"
                     r="90"
                     fill="none"
-                    stroke="#3b82f6"
+                    stroke="var(--primary)"
                     strokeWidth="8"
                     strokeDasharray={`${2 * Math.PI * 90 * (percentage / 100)} ${2 * Math.PI * 90}`}
                     strokeLinecap="round"
@@ -115,7 +116,9 @@ export default function Result() {
                   >
                     {percentage}%
                   </span>
-                  <span className="text-slate-400 text-xs mt-1">Score</span>
+                  <span className="text-muted-foreground text-xs mt-1">
+                    Score
+                  </span>
                 </div>
               </div>
             </div>
@@ -124,37 +127,37 @@ export default function Result() {
               <h2 className={`text-xl font-bold ${getPerformanceColor()} mb-2`}>
                 {getPerformanceMessage()}
               </h2>
-              <p className="text-slate-400 text-sm">
+              <p className="text-muted-foreground text-sm">
                 You answered {correctCount} out of {total} questions correctly
               </p>
             </div>
 
             <div className="grid grid-cols-3 gap-3">
-              <div className="bg-slate-700/50 rounded-lg p-4 text-center border border-slate-600">
-                <div className="text-2xl font-bold text-blue-400 mb-1">
+              <div className="bg-muted rounded-lg p-4 text-center border border-border">
+                <div className="text-2xl font-bold text-green-600 mb-1">
                   {correctCount}
                 </div>
-                <div className="text-slate-400 text-xs">Correct</div>
+                <div className="text-muted-foreground text-xs">Correct</div>
               </div>
 
-              <div className="bg-slate-700/50 rounded-lg p-4 text-center border border-slate-600">
-                <div className="text-2xl font-bold text-slate-400 mb-1">
+              <div className="bg-muted rounded-lg p-4 text-center border border-border">
+                <div className="text-2xl font-bold text-foreground mb-1">
                   {total}
                 </div>
-                <div className="text-slate-400 text-xs">Total</div>
+                <div className="text-muted-foreground text-xs">Total</div>
               </div>
 
-              <div className="bg-slate-700/50 rounded-lg p-4 text-center border border-slate-600">
-                <div className="text-2xl font-bold text-red-400 mb-1">
+              <div className="bg-muted rounded-lg p-4 text-center border border-border">
+                <div className="text-2xl font-bold text-destructive mb-1">
                   {inncorrectCount}
                 </div>
-                <div className="text-slate-400 text-xs">Incorrect</div>
+                <div className="text-muted-foreground text-xs">Incorrect</div>
               </div>
             </div>
 
             <button
-              onClick={() => router.push("/dashboard/mock-interviews")}
-              className="w-full py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-lg hover:from-blue-500 hover:to-blue-600 transition-all shadow-lg"
+              onClick={() => router.push("/dashboard")}
+              className="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-all shadow-lg"
             >
               Back to Interviews
             </button>

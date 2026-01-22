@@ -15,7 +15,7 @@ interface QuestionProps {
 }
 export default function MCQInterview() {
   const { secondsLeft, minutes, seconds, start, reset } = useCountDown({
-    initialSeconds: 5,
+    initialSeconds: 20,
   });
   const router = useRouter();
   const { isSubmitted, setIsSubmitted } = useValidateContext();
@@ -29,6 +29,7 @@ export default function MCQInterview() {
       setIsSubmitted(false);
     } else if (btnType == "submit") {
       console.log("Submitting quiz, navigating to result...");
+      setIsSubmitted(true);
       router.push("/dashboard/mock-interviews/mcq/result");
     } else {
       reset();
@@ -38,7 +39,7 @@ export default function MCQInterview() {
     }
   }
   let firstQn;
-  const { data, isFetching } = useQuestion();
+  const { data, isFetching, isLoading } = useQuestion();
   console.log(isFetching);
   console.log(data);
   const qnsLength = data?.length || 0;
@@ -103,12 +104,14 @@ export default function MCQInterview() {
           />
         )}
         <div className="mb-6">
-          <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-linear-to-r from-blue-500 to-blue-600 transition-all duration-300"
-              style={{ width: `${((currentIndex + 1) / qnsLength) * 100}%` }}
-            ></div>
-          </div>
+          {!isLoading && (
+            <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-linear-to-r from-blue-500 to-blue-600 transition-all duration-300"
+                style={{ width: `${((currentIndex + 1) / qnsLength) * 100}%` }}
+              ></div>
+            </div>
+          )}
         </div>
 
         <div className="flex items-center justify-evenly">

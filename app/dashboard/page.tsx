@@ -23,7 +23,7 @@ export default function Dashboard() {
   }, []);
   return (
     <>
-      <div className="bg-black w-full">
+      <div className="bg-background w-full min-h-screen text-foreground">
         <Nav></Nav>
         <SideBar></SideBar>
       </div>

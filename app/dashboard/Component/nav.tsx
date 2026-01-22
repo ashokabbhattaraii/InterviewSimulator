@@ -4,8 +4,10 @@ import { Bell, LogOut } from "lucide-react";
 import { useAuthStore } from "@/app/(auth)/store/userAuth";
 import { useState } from "react";
 import { signOut } from "@/app/(auth)/AuthActions/auth";
+import { ThemeToggle } from "@/app/(public)/components/toogleComponent/toogle";
 export default function Nav() {
   const { user } = useAuthStore();
+
   const [showDropdown, setShowDropdown] = useState(false);
 
   const handleLogout = async () => {
@@ -26,7 +28,9 @@ export default function Nav() {
         <div id="logo" className="ml-6 hover:scale-105 cursor-pointer">
           <Image src="/logo.png" width={80} height={80} alt="logo" />
         </div>
+
         <div className="flex ml-auto mr-10 gap-6 justify-center items-center">
+          <ThemeToggle></ThemeToggle>
           <div
             id="notification"
             className="text-white hover:text-blue-400 cursor-pointer transition-colors"

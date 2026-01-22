@@ -40,20 +40,20 @@ export default function User() {
 
   if (isLoading)
     return (
-      <div className="flex flex-col justify-center  items-center min-h-screen w-full text-white text-2xl font-bold">
+      <div className="flex flex-col justify-center  items-center min-h-screen w-full text-foreground text-2xl font-bold">
         <Loader2 className="animate-spin"></Loader2>
         <p>Loading...</p>
       </div>
     );
   if (error) return <p>Error fetching users</p>;
   return (
-    <div className="p-6 text-white">
+    <div className="p-6 text-foreground">
       <div className="flex justify-between my-2">
-        <h1 className="text-xl font-bold mb-4 bg-gradient-to-r from-blue-800 to-purple-400 text-transparent  bg-clip-text">
+        <h1 className="text-xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary text-transparent  bg-clip-text">
           Manage Users
         </h1>
         <button
-          className="px-3 py-3 bg-purple-600 rounded-xl font-bold cursor-pointer hover:scale-105 transition-all ease-in-out duration-200 shadow shadow-purple-700"
+          className="px-3 py-3 bg-primary text-primary-foreground rounded-xl font-bold cursor-pointer hover:scale-105 transition-all ease-in-out duration-200 shadow shadow-primary/50"
           onClick={() => setIsAddUserFormOpen(!isAddUserFormOpen)}
         >
           Add Users
@@ -64,8 +64,8 @@ export default function User() {
           <AddUserForm></AddUserForm>
         </div>
       )}
-      <table className="w-full border border-spacing-0   rounded-2xl border-separate overflow-hidden bg-slate-500/20 border-gray-700  ">
-        <thead className="   bg-blue-900/20 text-blue-400">
+      <table className="w-full border border-spacing-0   rounded-2xl border-separate overflow-hidden bg-card border-border  ">
+        <thead className="   bg-secondary/10 text-primary">
           <tr className=" ">
             <th className="py-4 px-3">SN</th>
             <th>First Name</th>
@@ -83,7 +83,7 @@ export default function User() {
               u.created_at,
             ).toLocaleDateString();
             return (
-              <tr className="text-left hover:bg-slate-600/80 transition-colors ">
+              <tr className="text-left hover:bg-muted/50 transition-colors text-foreground">
                 <td className="text-center py-4 px-3">{i + 1}</td>
                 <td>{u.user_metadata.firstName}</td>
                 <td>{u.user_metadata.lastName}</td>
@@ -91,12 +91,12 @@ export default function User() {
                 <td>{u.email}</td>
                 <td>{updatedCreatedAt}</td>
                 <td className="flex justify-center items-center">
-                  <span className="  px-3 py-2 rounded-2xl bg-blue-600 hover:bg-blue-800 flex justify-center items-center mt-2">
+                  <span className="  px-3 py-2 rounded-2xl bg-primary text-primary-foreground hover:bg-primary/90 flex justify-center items-center mt-2">
                     {u.app_metadata.role}
                   </span>
                 </td>
                 <td className="">
-                  <div className="flex justify-center items-center gap-2">
+                  <div className="flex justify-center items-center gap-2 text-muted-foreground hover:text-foreground">
                     {" "}
                     <Edit></Edit>
                     <Trash></Trash>
@@ -110,7 +110,7 @@ export default function User() {
       <div className="flex justify-center absolute bottom-5 right-0 items-center mr-10 mt-2 gap-4 ">
         <button
           disabled={page === 1}
-          className=" h-12 flex justify-center items-center w-12 rounded-full disabled:cursor-not-allowed disabled:bg-blue-600/30 bg-blue-600 hover:bg-blue-800  "
+          className=" h-12 flex justify-center items-center w-12 rounded-full disabled:cursor-not-allowed disabled:bg-muted bg-primary hover:bg-primary/90 text-primary-foreground transition-all shadow-md"
           onClick={() => managePage("prev")}
         >
           <ArrowLeft
@@ -118,11 +118,11 @@ export default function User() {
             className={`hover:-translate-x-1 transition-all ease-out duration-200`}
           ></ArrowLeft>
         </button>
-        <div className="bg-blue-600/60 font-bold px-4 py-2 rounded">
+        <div className="bg-primary/10 text-primary font-bold px-4 py-2 rounded border border-primary/20">
           Page {page}
         </div>
         <button
-          className=" h-12 flex justify-center items-center w-12 rounded-full bg-blue-600 hover:bg-blue-800  "
+          className=" h-12 flex justify-center items-center w-12 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground transition-all shadow-md hover:shadow-lg"
           onClick={() => managePage("next")}
         >
           {" "}

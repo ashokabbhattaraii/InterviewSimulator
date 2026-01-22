@@ -1,7 +1,13 @@
-export async function getQuestions() {
-  const res = await fetch("/dashboard/fetch");
+export async function getQuestions(difficulty: string) {
+  const res = await fetch(
+    `/api/question?difficulty=${difficulty.toUpperCase()}`,
+    {
+      method: "GET",
+    },
+  );
   if (!res.ok) {
-    throw new Error("Failed to fetch");
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.error || "Failed to fetch questions");
   }
   return res.json();
 }

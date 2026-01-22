@@ -29,7 +29,7 @@ export async function signUp(formData: user) {
         firstName: formData.firstName,
         lastName: formData.lastName,
         username: formData.username,
-        role: "User",
+        role: "user",
       },
     },
   });
@@ -57,9 +57,7 @@ export async function signIn(formData: { email: string; password: string }) {
       success: true,
       user: data.user,
       redirect:
-        data.user.email === "ashok.ab.bhattaraii@gmail.com"
-          ? "/admin"
-          : "/dashboard",
+        data.user?.app_metadata.role === "admin" ? "/admin" : "/dashboard",
     };
   }
 

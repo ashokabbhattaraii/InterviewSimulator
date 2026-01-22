@@ -24,7 +24,7 @@ export default function SideBar() {
     { name: "Feedback", icon: <ClipboardCheck></ClipboardCheck> },
     { name: "Settings", icon: <Settings></Settings> },
   ];
-  const selectedClass = "border-r-3 border-red-600";
+  const selectedClass = "border-r-3 border-primary";
 
   async function logout() {
     await signOut();
@@ -32,11 +32,11 @@ export default function SideBar() {
 
   return (
     <>
-      <div className="flex min-h-screen gap-6">
+      <div className=" flex min-h-screen gap-6">
         <aside
           className={`${
             toogleMenu ? "w-64" : "w-18 flex items-center justify-center"
-          } pt-20 flex justify-start flex-col bg-blue-600  min-h-screen transition-all ease-out duration-300 `}
+          } pt-20 flex justify-start fixed flex-col bg-sidebar text-sidebar-foreground min-h-screen transition-all ease-out duration-300 border-r border-sidebar-border`}
         >
           <span className="ml-auto my-4 h-15 w-15 ">
             <Menu size={40} onClick={() => setToogleMenu(!toogleMenu)}></Menu>
@@ -49,8 +49,8 @@ export default function SideBar() {
                   onClick={() => setSelected(item.name.toLowerCase())}
                   className={`w-full flex justify-center items-center gap-3 px-4 py-3 rounded-lg transition-all ${
                     selected === item.name.toLowerCase()
-                      ? "bg-gradient-to-r from-blue-900/80 to-blue-500 text-white border border-blue-500"
-                      : "text-slate-400 hover:bg-white/5 hover:text-white"
+                      ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-md"
+                      : "text-sidebar-foreground/70 hover:bg-sidebar-accent/20 hover:text-sidebar-foreground"
                   } font-bold`}
                 >
                   <span className="">{item.icon}</span>
@@ -64,14 +64,16 @@ export default function SideBar() {
             })}
           </div>
           <span
-            className="mt-auto ml-auto mb-3 mr-4 flex gap-2 text-white cursor-pointer justify-center items-center hover:text-slate-400 font-bold"
+            className="mt-auto ml-auto mb-3 mr-4 flex gap-2 text-sidebar-foreground cursor-pointer justify-center items-center hover:text-sidebar-foreground/80 font-bold"
             onClick={logout}
           >
             <LogOut></LogOut>
             {toogleMenu ? "LogOut" : ""}
           </span>
         </aside>
-        <div className="flex pt-22">
+        <div
+          className={`${toogleMenu ? "ml-64" : "ml-18"} flex pt-22 w-full px-6 transition-all ease-in-out duration-200`}
+        >
           {selected == "dashboard" && <DashboardHome></DashboardHome>}
           {selected == "mock interviews" && <MockInterviews></MockInterviews>}
           {selected == "profile" && <DashboardHome></DashboardHome>}
