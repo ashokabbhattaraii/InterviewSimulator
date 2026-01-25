@@ -65,10 +65,14 @@ export async function signIn(formData: { email: string; password: string }) {
 }
 
 export async function signOut() {
-  const supabase = createClient();
-  try {
-    (await supabase).auth.signOut();
-  } catch (error) {}
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    console.log("Error signing out:", error.message);
+    return { success: false, message: error.message };
+  }
   revalidatePath("/", "layout");
   redirect("/");
 }

@@ -149,6 +149,17 @@ exports.Prisma.AnswerScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.AttemptScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  mockType: 'mockType',
+  totalCorrect: 'totalCorrect',
+  totalIncorrect: 'totalIncorrect',
+  totalAttempt: 'totalAttempt',
+  result: 'result',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -169,9 +180,17 @@ exports.Difficulty = exports.$Enums.Difficulty = {
   HARD: 'HARD'
 };
 
+exports.MockType = exports.$Enums.MockType = {
+  MCQ: 'MCQ',
+  Coding: 'Coding',
+  Behavioral: 'Behavioral',
+  Technical: 'Technical'
+};
+
 exports.Prisma.ModelName = {
   Question: 'Question',
-  Answer: 'Answer'
+  Answer: 'Answer',
+  Attempt: 'Attempt'
 };
 
 /**

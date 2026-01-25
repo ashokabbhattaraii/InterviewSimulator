@@ -6,12 +6,21 @@ import { useCountDown } from "@/app/(public)/hooks/timer";
 import useQuestion from "@/app/(public)/hooks/question";
 import Quest from "./questionComponent";
 import { useValidateContext } from "../../Context/ValidateContext";
+import useManageResult from "@/app/(public)/hooks/result";
 interface QuestionProps {
   title: string;
   content: string;
   id: string;
   index: number;
   options?: string[] | null;
+}
+interface resultType {
+  userId: string;
+  mockType: string;
+  totalAttempt: number;
+  totalCorrect: number;
+  totalIncorrect: number;
+  result: number;
 }
 export default function MCQInterview() {
   const { secondsLeft, minutes, seconds, start, reset } = useCountDown({
@@ -20,6 +29,7 @@ export default function MCQInterview() {
   const router = useRouter();
   const { isSubmitted, setIsSubmitted } = useValidateContext();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { mutate: handleSubmit } = useManageResult();
   function manageQns(btnType: "prev" | "next" | "submit") {
     if (btnType == "next") {
       reset();
@@ -28,7 +38,9 @@ export default function MCQInterview() {
       start();
       setIsSubmitted(false);
     } else if (btnType == "submit") {
+      handleSubmit();
       console.log("Submitting quiz, navigating to result...");
+
       setIsSubmitted(true);
       router.push("/dashboard/mock-interviews/mcq/result");
     } else {

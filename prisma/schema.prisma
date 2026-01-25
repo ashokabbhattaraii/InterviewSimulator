@@ -14,9 +14,8 @@ datasource db {
   url       = env("DATABASE_URL")
 }
 
-
 model Question {
-  id String @id 
+  id String @id
   title String
   content String 
   slug  String  @unique
@@ -26,23 +25,18 @@ model Question {
   options String[]
   difficulty  Difficulty @default(MEDIUM)
 
-  //Engagement
   views Int @default(0)
   upvotes Int @default(0)
   downvotes Int @default(0)
 
-  //status
   isPublished Boolean @default(false)
   isFeatured  Boolean @default(false)
 
-  //timestamps
   createdAt DateTime  @default(now())
   updatedAt DateTime @updatedAt
 
-  //Relations
   answers Answer[]
-  //votes QuestionVote[]
-
+ 
 }
 
 
@@ -53,7 +47,7 @@ enum Difficulty {
 }
 
 model Answer {
-  id         String   @id @default(cuid())        // primary key
+  id         String   @id @default(cuid())
   text       String
   isCorrect  Boolean  @default(false)
 
@@ -62,4 +56,24 @@ model Answer {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+
+}
+
+model Attempt {
+  id            String   @id @default(cuid())
+  userId        String
+  mockType      MockType
+  totalCorrect  Int
+  totalIncorrect Int
+  totalAttempt  Int
+  result        Float
+  createdAt     DateTime @default(now())
+}
+
+enum MockType {
+  MCQ
+  Coding
+  Behavioral
+  Technical
 }

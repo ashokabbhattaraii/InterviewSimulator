@@ -23,6 +23,11 @@ export type Question = $Result.DefaultSelection<Prisma.$QuestionPayload>
  * 
  */
 export type Answer = $Result.DefaultSelection<Prisma.$AnswerPayload>
+/**
+ * Model Attempt
+ * 
+ */
+export type Attempt = $Result.DefaultSelection<Prisma.$AttemptPayload>
 
 /**
  * Enums
@@ -36,11 +41,25 @@ export namespace $Enums {
 
 export type Difficulty = (typeof Difficulty)[keyof typeof Difficulty]
 
+
+export const MockType: {
+  MCQ: 'MCQ',
+  Coding: 'Coding',
+  Behavioral: 'Behavioral',
+  Technical: 'Technical'
+};
+
+export type MockType = (typeof MockType)[keyof typeof MockType]
+
 }
 
 export type Difficulty = $Enums.Difficulty
 
 export const Difficulty: typeof $Enums.Difficulty
+
+export type MockType = $Enums.MockType
+
+export const MockType: typeof $Enums.MockType
 
 /**
  * ##  Prisma Client ʲˢ
@@ -184,6 +203,16 @@ export class PrismaClient<
     * ```
     */
   get answer(): Prisma.AnswerDelegate<ExtArgs>;
+
+  /**
+   * `prisma.attempt`: Exposes CRUD operations for the **Attempt** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Attempts
+    * const attempts = await prisma.attempt.findMany()
+    * ```
+    */
+  get attempt(): Prisma.AttemptDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -626,7 +655,8 @@ export namespace Prisma {
 
   export const ModelName: {
     Question: 'Question',
-    Answer: 'Answer'
+    Answer: 'Answer',
+    Attempt: 'Attempt'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -642,7 +672,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "question" | "answer"
+      modelProps: "question" | "answer" | "attempt"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -783,6 +813,76 @@ export namespace Prisma {
           count: {
             args: Prisma.AnswerCountArgs<ExtArgs>
             result: $Utils.Optional<AnswerCountAggregateOutputType> | number
+          }
+        }
+      }
+      Attempt: {
+        payload: Prisma.$AttemptPayload<ExtArgs>
+        fields: Prisma.AttemptFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AttemptFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttemptPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AttemptFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttemptPayload>
+          }
+          findFirst: {
+            args: Prisma.AttemptFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttemptPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AttemptFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttemptPayload>
+          }
+          findMany: {
+            args: Prisma.AttemptFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttemptPayload>[]
+          }
+          create: {
+            args: Prisma.AttemptCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttemptPayload>
+          }
+          createMany: {
+            args: Prisma.AttemptCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AttemptCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttemptPayload>[]
+          }
+          delete: {
+            args: Prisma.AttemptDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttemptPayload>
+          }
+          update: {
+            args: Prisma.AttemptUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttemptPayload>
+          }
+          deleteMany: {
+            args: Prisma.AttemptDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AttemptUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.AttemptUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttemptPayload>
+          }
+          aggregate: {
+            args: Prisma.AttemptAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAttempt>
+          }
+          groupBy: {
+            args: Prisma.AttemptGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AttemptGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AttemptCountArgs<ExtArgs>
+            result: $Utils.Optional<AttemptCountAggregateOutputType> | number
           }
         }
       }
@@ -3025,6 +3125,966 @@ export namespace Prisma {
 
 
   /**
+   * Model Attempt
+   */
+
+  export type AggregateAttempt = {
+    _count: AttemptCountAggregateOutputType | null
+    _avg: AttemptAvgAggregateOutputType | null
+    _sum: AttemptSumAggregateOutputType | null
+    _min: AttemptMinAggregateOutputType | null
+    _max: AttemptMaxAggregateOutputType | null
+  }
+
+  export type AttemptAvgAggregateOutputType = {
+    totalCorrect: number | null
+    totalIncorrect: number | null
+    totalAttempt: number | null
+    result: number | null
+  }
+
+  export type AttemptSumAggregateOutputType = {
+    totalCorrect: number | null
+    totalIncorrect: number | null
+    totalAttempt: number | null
+    result: number | null
+  }
+
+  export type AttemptMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    mockType: $Enums.MockType | null
+    totalCorrect: number | null
+    totalIncorrect: number | null
+    totalAttempt: number | null
+    result: number | null
+    createdAt: Date | null
+  }
+
+  export type AttemptMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    mockType: $Enums.MockType | null
+    totalCorrect: number | null
+    totalIncorrect: number | null
+    totalAttempt: number | null
+    result: number | null
+    createdAt: Date | null
+  }
+
+  export type AttemptCountAggregateOutputType = {
+    id: number
+    userId: number
+    mockType: number
+    totalCorrect: number
+    totalIncorrect: number
+    totalAttempt: number
+    result: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type AttemptAvgAggregateInputType = {
+    totalCorrect?: true
+    totalIncorrect?: true
+    totalAttempt?: true
+    result?: true
+  }
+
+  export type AttemptSumAggregateInputType = {
+    totalCorrect?: true
+    totalIncorrect?: true
+    totalAttempt?: true
+    result?: true
+  }
+
+  export type AttemptMinAggregateInputType = {
+    id?: true
+    userId?: true
+    mockType?: true
+    totalCorrect?: true
+    totalIncorrect?: true
+    totalAttempt?: true
+    result?: true
+    createdAt?: true
+  }
+
+  export type AttemptMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    mockType?: true
+    totalCorrect?: true
+    totalIncorrect?: true
+    totalAttempt?: true
+    result?: true
+    createdAt?: true
+  }
+
+  export type AttemptCountAggregateInputType = {
+    id?: true
+    userId?: true
+    mockType?: true
+    totalCorrect?: true
+    totalIncorrect?: true
+    totalAttempt?: true
+    result?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type AttemptAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Attempt to aggregate.
+     */
+    where?: AttemptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Attempts to fetch.
+     */
+    orderBy?: AttemptOrderByWithRelationInput | AttemptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AttemptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Attempts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Attempts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Attempts
+    **/
+    _count?: true | AttemptCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AttemptAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AttemptSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AttemptMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AttemptMaxAggregateInputType
+  }
+
+  export type GetAttemptAggregateType<T extends AttemptAggregateArgs> = {
+        [P in keyof T & keyof AggregateAttempt]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAttempt[P]>
+      : GetScalarType<T[P], AggregateAttempt[P]>
+  }
+
+
+
+
+  export type AttemptGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AttemptWhereInput
+    orderBy?: AttemptOrderByWithAggregationInput | AttemptOrderByWithAggregationInput[]
+    by: AttemptScalarFieldEnum[] | AttemptScalarFieldEnum
+    having?: AttemptScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AttemptCountAggregateInputType | true
+    _avg?: AttemptAvgAggregateInputType
+    _sum?: AttemptSumAggregateInputType
+    _min?: AttemptMinAggregateInputType
+    _max?: AttemptMaxAggregateInputType
+  }
+
+  export type AttemptGroupByOutputType = {
+    id: string
+    userId: string
+    mockType: $Enums.MockType
+    totalCorrect: number
+    totalIncorrect: number
+    totalAttempt: number
+    result: number
+    createdAt: Date
+    _count: AttemptCountAggregateOutputType | null
+    _avg: AttemptAvgAggregateOutputType | null
+    _sum: AttemptSumAggregateOutputType | null
+    _min: AttemptMinAggregateOutputType | null
+    _max: AttemptMaxAggregateOutputType | null
+  }
+
+  type GetAttemptGroupByPayload<T extends AttemptGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AttemptGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AttemptGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AttemptGroupByOutputType[P]>
+            : GetScalarType<T[P], AttemptGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AttemptSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    mockType?: boolean
+    totalCorrect?: boolean
+    totalIncorrect?: boolean
+    totalAttempt?: boolean
+    result?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["attempt"]>
+
+  export type AttemptSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    mockType?: boolean
+    totalCorrect?: boolean
+    totalIncorrect?: boolean
+    totalAttempt?: boolean
+    result?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["attempt"]>
+
+  export type AttemptSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    mockType?: boolean
+    totalCorrect?: boolean
+    totalIncorrect?: boolean
+    totalAttempt?: boolean
+    result?: boolean
+    createdAt?: boolean
+  }
+
+
+  export type $AttemptPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Attempt"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      mockType: $Enums.MockType
+      totalCorrect: number
+      totalIncorrect: number
+      totalAttempt: number
+      result: number
+      createdAt: Date
+    }, ExtArgs["result"]["attempt"]>
+    composites: {}
+  }
+
+  type AttemptGetPayload<S extends boolean | null | undefined | AttemptDefaultArgs> = $Result.GetResult<Prisma.$AttemptPayload, S>
+
+  type AttemptCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<AttemptFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: AttemptCountAggregateInputType | true
+    }
+
+  export interface AttemptDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Attempt'], meta: { name: 'Attempt' } }
+    /**
+     * Find zero or one Attempt that matches the filter.
+     * @param {AttemptFindUniqueArgs} args - Arguments to find a Attempt
+     * @example
+     * // Get one Attempt
+     * const attempt = await prisma.attempt.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AttemptFindUniqueArgs>(args: SelectSubset<T, AttemptFindUniqueArgs<ExtArgs>>): Prisma__AttemptClient<$Result.GetResult<Prisma.$AttemptPayload<ExtArgs>, T, "findUnique"> | null, null, ExtArgs>
+
+    /**
+     * Find one Attempt that matches the filter or throw an error with `error.code='P2025'` 
+     * if no matches were found.
+     * @param {AttemptFindUniqueOrThrowArgs} args - Arguments to find a Attempt
+     * @example
+     * // Get one Attempt
+     * const attempt = await prisma.attempt.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AttemptFindUniqueOrThrowArgs>(args: SelectSubset<T, AttemptFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AttemptClient<$Result.GetResult<Prisma.$AttemptPayload<ExtArgs>, T, "findUniqueOrThrow">, never, ExtArgs>
+
+    /**
+     * Find the first Attempt that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttemptFindFirstArgs} args - Arguments to find a Attempt
+     * @example
+     * // Get one Attempt
+     * const attempt = await prisma.attempt.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AttemptFindFirstArgs>(args?: SelectSubset<T, AttemptFindFirstArgs<ExtArgs>>): Prisma__AttemptClient<$Result.GetResult<Prisma.$AttemptPayload<ExtArgs>, T, "findFirst"> | null, null, ExtArgs>
+
+    /**
+     * Find the first Attempt that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttemptFindFirstOrThrowArgs} args - Arguments to find a Attempt
+     * @example
+     * // Get one Attempt
+     * const attempt = await prisma.attempt.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AttemptFindFirstOrThrowArgs>(args?: SelectSubset<T, AttemptFindFirstOrThrowArgs<ExtArgs>>): Prisma__AttemptClient<$Result.GetResult<Prisma.$AttemptPayload<ExtArgs>, T, "findFirstOrThrow">, never, ExtArgs>
+
+    /**
+     * Find zero or more Attempts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttemptFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Attempts
+     * const attempts = await prisma.attempt.findMany()
+     * 
+     * // Get first 10 Attempts
+     * const attempts = await prisma.attempt.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const attemptWithIdOnly = await prisma.attempt.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AttemptFindManyArgs>(args?: SelectSubset<T, AttemptFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttemptPayload<ExtArgs>, T, "findMany">>
+
+    /**
+     * Create a Attempt.
+     * @param {AttemptCreateArgs} args - Arguments to create a Attempt.
+     * @example
+     * // Create one Attempt
+     * const Attempt = await prisma.attempt.create({
+     *   data: {
+     *     // ... data to create a Attempt
+     *   }
+     * })
+     * 
+     */
+    create<T extends AttemptCreateArgs>(args: SelectSubset<T, AttemptCreateArgs<ExtArgs>>): Prisma__AttemptClient<$Result.GetResult<Prisma.$AttemptPayload<ExtArgs>, T, "create">, never, ExtArgs>
+
+    /**
+     * Create many Attempts.
+     * @param {AttemptCreateManyArgs} args - Arguments to create many Attempts.
+     * @example
+     * // Create many Attempts
+     * const attempt = await prisma.attempt.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AttemptCreateManyArgs>(args?: SelectSubset<T, AttemptCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Attempts and returns the data saved in the database.
+     * @param {AttemptCreateManyAndReturnArgs} args - Arguments to create many Attempts.
+     * @example
+     * // Create many Attempts
+     * const attempt = await prisma.attempt.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Attempts and only return the `id`
+     * const attemptWithIdOnly = await prisma.attempt.createManyAndReturn({ 
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AttemptCreateManyAndReturnArgs>(args?: SelectSubset<T, AttemptCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttemptPayload<ExtArgs>, T, "createManyAndReturn">>
+
+    /**
+     * Delete a Attempt.
+     * @param {AttemptDeleteArgs} args - Arguments to delete one Attempt.
+     * @example
+     * // Delete one Attempt
+     * const Attempt = await prisma.attempt.delete({
+     *   where: {
+     *     // ... filter to delete one Attempt
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AttemptDeleteArgs>(args: SelectSubset<T, AttemptDeleteArgs<ExtArgs>>): Prisma__AttemptClient<$Result.GetResult<Prisma.$AttemptPayload<ExtArgs>, T, "delete">, never, ExtArgs>
+
+    /**
+     * Update one Attempt.
+     * @param {AttemptUpdateArgs} args - Arguments to update one Attempt.
+     * @example
+     * // Update one Attempt
+     * const attempt = await prisma.attempt.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AttemptUpdateArgs>(args: SelectSubset<T, AttemptUpdateArgs<ExtArgs>>): Prisma__AttemptClient<$Result.GetResult<Prisma.$AttemptPayload<ExtArgs>, T, "update">, never, ExtArgs>
+
+    /**
+     * Delete zero or more Attempts.
+     * @param {AttemptDeleteManyArgs} args - Arguments to filter Attempts to delete.
+     * @example
+     * // Delete a few Attempts
+     * const { count } = await prisma.attempt.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AttemptDeleteManyArgs>(args?: SelectSubset<T, AttemptDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Attempts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttemptUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Attempts
+     * const attempt = await prisma.attempt.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AttemptUpdateManyArgs>(args: SelectSubset<T, AttemptUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Attempt.
+     * @param {AttemptUpsertArgs} args - Arguments to update or create a Attempt.
+     * @example
+     * // Update or create a Attempt
+     * const attempt = await prisma.attempt.upsert({
+     *   create: {
+     *     // ... data to create a Attempt
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Attempt we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AttemptUpsertArgs>(args: SelectSubset<T, AttemptUpsertArgs<ExtArgs>>): Prisma__AttemptClient<$Result.GetResult<Prisma.$AttemptPayload<ExtArgs>, T, "upsert">, never, ExtArgs>
+
+
+    /**
+     * Count the number of Attempts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttemptCountArgs} args - Arguments to filter Attempts to count.
+     * @example
+     * // Count the number of Attempts
+     * const count = await prisma.attempt.count({
+     *   where: {
+     *     // ... the filter for the Attempts we want to count
+     *   }
+     * })
+    **/
+    count<T extends AttemptCountArgs>(
+      args?: Subset<T, AttemptCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AttemptCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Attempt.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttemptAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AttemptAggregateArgs>(args: Subset<T, AttemptAggregateArgs>): Prisma.PrismaPromise<GetAttemptAggregateType<T>>
+
+    /**
+     * Group by Attempt.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttemptGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AttemptGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AttemptGroupByArgs['orderBy'] }
+        : { orderBy?: AttemptGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AttemptGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAttemptGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Attempt model
+   */
+  readonly fields: AttemptFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Attempt.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AttemptClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Attempt model
+   */ 
+  interface AttemptFieldRefs {
+    readonly id: FieldRef<"Attempt", 'String'>
+    readonly userId: FieldRef<"Attempt", 'String'>
+    readonly mockType: FieldRef<"Attempt", 'MockType'>
+    readonly totalCorrect: FieldRef<"Attempt", 'Int'>
+    readonly totalIncorrect: FieldRef<"Attempt", 'Int'>
+    readonly totalAttempt: FieldRef<"Attempt", 'Int'>
+    readonly result: FieldRef<"Attempt", 'Float'>
+    readonly createdAt: FieldRef<"Attempt", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Attempt findUnique
+   */
+  export type AttemptFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attempt
+     */
+    select?: AttemptSelect<ExtArgs> | null
+    /**
+     * Filter, which Attempt to fetch.
+     */
+    where: AttemptWhereUniqueInput
+  }
+
+  /**
+   * Attempt findUniqueOrThrow
+   */
+  export type AttemptFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attempt
+     */
+    select?: AttemptSelect<ExtArgs> | null
+    /**
+     * Filter, which Attempt to fetch.
+     */
+    where: AttemptWhereUniqueInput
+  }
+
+  /**
+   * Attempt findFirst
+   */
+  export type AttemptFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attempt
+     */
+    select?: AttemptSelect<ExtArgs> | null
+    /**
+     * Filter, which Attempt to fetch.
+     */
+    where?: AttemptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Attempts to fetch.
+     */
+    orderBy?: AttemptOrderByWithRelationInput | AttemptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Attempts.
+     */
+    cursor?: AttemptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Attempts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Attempts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Attempts.
+     */
+    distinct?: AttemptScalarFieldEnum | AttemptScalarFieldEnum[]
+  }
+
+  /**
+   * Attempt findFirstOrThrow
+   */
+  export type AttemptFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attempt
+     */
+    select?: AttemptSelect<ExtArgs> | null
+    /**
+     * Filter, which Attempt to fetch.
+     */
+    where?: AttemptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Attempts to fetch.
+     */
+    orderBy?: AttemptOrderByWithRelationInput | AttemptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Attempts.
+     */
+    cursor?: AttemptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Attempts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Attempts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Attempts.
+     */
+    distinct?: AttemptScalarFieldEnum | AttemptScalarFieldEnum[]
+  }
+
+  /**
+   * Attempt findMany
+   */
+  export type AttemptFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attempt
+     */
+    select?: AttemptSelect<ExtArgs> | null
+    /**
+     * Filter, which Attempts to fetch.
+     */
+    where?: AttemptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Attempts to fetch.
+     */
+    orderBy?: AttemptOrderByWithRelationInput | AttemptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Attempts.
+     */
+    cursor?: AttemptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Attempts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Attempts.
+     */
+    skip?: number
+    distinct?: AttemptScalarFieldEnum | AttemptScalarFieldEnum[]
+  }
+
+  /**
+   * Attempt create
+   */
+  export type AttemptCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attempt
+     */
+    select?: AttemptSelect<ExtArgs> | null
+    /**
+     * The data needed to create a Attempt.
+     */
+    data: XOR<AttemptCreateInput, AttemptUncheckedCreateInput>
+  }
+
+  /**
+   * Attempt createMany
+   */
+  export type AttemptCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Attempts.
+     */
+    data: AttemptCreateManyInput | AttemptCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Attempt createManyAndReturn
+   */
+  export type AttemptCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attempt
+     */
+    select?: AttemptSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * The data used to create many Attempts.
+     */
+    data: AttemptCreateManyInput | AttemptCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Attempt update
+   */
+  export type AttemptUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attempt
+     */
+    select?: AttemptSelect<ExtArgs> | null
+    /**
+     * The data needed to update a Attempt.
+     */
+    data: XOR<AttemptUpdateInput, AttemptUncheckedUpdateInput>
+    /**
+     * Choose, which Attempt to update.
+     */
+    where: AttemptWhereUniqueInput
+  }
+
+  /**
+   * Attempt updateMany
+   */
+  export type AttemptUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Attempts.
+     */
+    data: XOR<AttemptUpdateManyMutationInput, AttemptUncheckedUpdateManyInput>
+    /**
+     * Filter which Attempts to update
+     */
+    where?: AttemptWhereInput
+  }
+
+  /**
+   * Attempt upsert
+   */
+  export type AttemptUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attempt
+     */
+    select?: AttemptSelect<ExtArgs> | null
+    /**
+     * The filter to search for the Attempt to update in case it exists.
+     */
+    where: AttemptWhereUniqueInput
+    /**
+     * In case the Attempt found by the `where` argument doesn't exist, create a new Attempt with this data.
+     */
+    create: XOR<AttemptCreateInput, AttemptUncheckedCreateInput>
+    /**
+     * In case the Attempt was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AttemptUpdateInput, AttemptUncheckedUpdateInput>
+  }
+
+  /**
+   * Attempt delete
+   */
+  export type AttemptDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attempt
+     */
+    select?: AttemptSelect<ExtArgs> | null
+    /**
+     * Filter which Attempt to delete.
+     */
+    where: AttemptWhereUniqueInput
+  }
+
+  /**
+   * Attempt deleteMany
+   */
+  export type AttemptDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Attempts to delete
+     */
+    where?: AttemptWhereInput
+  }
+
+  /**
+   * Attempt without action
+   */
+  export type AttemptDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attempt
+     */
+    select?: AttemptSelect<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -3069,6 +4129,20 @@ export namespace Prisma {
   };
 
   export type AnswerScalarFieldEnum = (typeof AnswerScalarFieldEnum)[keyof typeof AnswerScalarFieldEnum]
+
+
+  export const AttemptScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    mockType: 'mockType',
+    totalCorrect: 'totalCorrect',
+    totalIncorrect: 'totalIncorrect',
+    totalAttempt: 'totalAttempt',
+    result: 'result',
+    createdAt: 'createdAt'
+  };
+
+  export type AttemptScalarFieldEnum = (typeof AttemptScalarFieldEnum)[keyof typeof AttemptScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -3160,6 +4234,20 @@ export namespace Prisma {
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'MockType'
+   */
+  export type EnumMockTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MockType'>
+    
+
+
+  /**
+   * Reference to a field of type 'MockType[]'
+   */
+  export type ListEnumMockTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MockType[]'>
     
 
 
@@ -3345,6 +4433,75 @@ export namespace Prisma {
     questionId?: StringWithAggregatesFilter<"Answer"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Answer"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Answer"> | Date | string
+  }
+
+  export type AttemptWhereInput = {
+    AND?: AttemptWhereInput | AttemptWhereInput[]
+    OR?: AttemptWhereInput[]
+    NOT?: AttemptWhereInput | AttemptWhereInput[]
+    id?: StringFilter<"Attempt"> | string
+    userId?: StringFilter<"Attempt"> | string
+    mockType?: EnumMockTypeFilter<"Attempt"> | $Enums.MockType
+    totalCorrect?: IntFilter<"Attempt"> | number
+    totalIncorrect?: IntFilter<"Attempt"> | number
+    totalAttempt?: IntFilter<"Attempt"> | number
+    result?: FloatFilter<"Attempt"> | number
+    createdAt?: DateTimeFilter<"Attempt"> | Date | string
+  }
+
+  export type AttemptOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    mockType?: SortOrder
+    totalCorrect?: SortOrder
+    totalIncorrect?: SortOrder
+    totalAttempt?: SortOrder
+    result?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AttemptWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AttemptWhereInput | AttemptWhereInput[]
+    OR?: AttemptWhereInput[]
+    NOT?: AttemptWhereInput | AttemptWhereInput[]
+    userId?: StringFilter<"Attempt"> | string
+    mockType?: EnumMockTypeFilter<"Attempt"> | $Enums.MockType
+    totalCorrect?: IntFilter<"Attempt"> | number
+    totalIncorrect?: IntFilter<"Attempt"> | number
+    totalAttempt?: IntFilter<"Attempt"> | number
+    result?: FloatFilter<"Attempt"> | number
+    createdAt?: DateTimeFilter<"Attempt"> | Date | string
+  }, "id">
+
+  export type AttemptOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    mockType?: SortOrder
+    totalCorrect?: SortOrder
+    totalIncorrect?: SortOrder
+    totalAttempt?: SortOrder
+    result?: SortOrder
+    createdAt?: SortOrder
+    _count?: AttemptCountOrderByAggregateInput
+    _avg?: AttemptAvgOrderByAggregateInput
+    _max?: AttemptMaxOrderByAggregateInput
+    _min?: AttemptMinOrderByAggregateInput
+    _sum?: AttemptSumOrderByAggregateInput
+  }
+
+  export type AttemptScalarWhereWithAggregatesInput = {
+    AND?: AttemptScalarWhereWithAggregatesInput | AttemptScalarWhereWithAggregatesInput[]
+    OR?: AttemptScalarWhereWithAggregatesInput[]
+    NOT?: AttemptScalarWhereWithAggregatesInput | AttemptScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Attempt"> | string
+    userId?: StringWithAggregatesFilter<"Attempt"> | string
+    mockType?: EnumMockTypeWithAggregatesFilter<"Attempt"> | $Enums.MockType
+    totalCorrect?: IntWithAggregatesFilter<"Attempt"> | number
+    totalIncorrect?: IntWithAggregatesFilter<"Attempt"> | number
+    totalAttempt?: IntWithAggregatesFilter<"Attempt"> | number
+    result?: FloatWithAggregatesFilter<"Attempt"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"Attempt"> | Date | string
   }
 
   export type QuestionCreateInput = {
@@ -3537,6 +4694,83 @@ export namespace Prisma {
     questionId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AttemptCreateInput = {
+    id?: string
+    userId: string
+    mockType: $Enums.MockType
+    totalCorrect: number
+    totalIncorrect: number
+    totalAttempt: number
+    result: number
+    createdAt?: Date | string
+  }
+
+  export type AttemptUncheckedCreateInput = {
+    id?: string
+    userId: string
+    mockType: $Enums.MockType
+    totalCorrect: number
+    totalIncorrect: number
+    totalAttempt: number
+    result: number
+    createdAt?: Date | string
+  }
+
+  export type AttemptUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    mockType?: EnumMockTypeFieldUpdateOperationsInput | $Enums.MockType
+    totalCorrect?: IntFieldUpdateOperationsInput | number
+    totalIncorrect?: IntFieldUpdateOperationsInput | number
+    totalAttempt?: IntFieldUpdateOperationsInput | number
+    result?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AttemptUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    mockType?: EnumMockTypeFieldUpdateOperationsInput | $Enums.MockType
+    totalCorrect?: IntFieldUpdateOperationsInput | number
+    totalIncorrect?: IntFieldUpdateOperationsInput | number
+    totalAttempt?: IntFieldUpdateOperationsInput | number
+    result?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AttemptCreateManyInput = {
+    id?: string
+    userId: string
+    mockType: $Enums.MockType
+    totalCorrect: number
+    totalIncorrect: number
+    totalAttempt: number
+    result: number
+    createdAt?: Date | string
+  }
+
+  export type AttemptUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    mockType?: EnumMockTypeFieldUpdateOperationsInput | $Enums.MockType
+    totalCorrect?: IntFieldUpdateOperationsInput | number
+    totalIncorrect?: IntFieldUpdateOperationsInput | number
+    totalAttempt?: IntFieldUpdateOperationsInput | number
+    result?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AttemptUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    mockType?: EnumMockTypeFieldUpdateOperationsInput | $Enums.MockType
+    totalCorrect?: IntFieldUpdateOperationsInput | number
+    totalIncorrect?: IntFieldUpdateOperationsInput | number
+    totalAttempt?: IntFieldUpdateOperationsInput | number
+    result?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -3804,6 +5038,97 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type EnumMockTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.MockType | EnumMockTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.MockType[] | ListEnumMockTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MockType[] | ListEnumMockTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumMockTypeFilter<$PrismaModel> | $Enums.MockType
+  }
+
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type AttemptCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    mockType?: SortOrder
+    totalCorrect?: SortOrder
+    totalIncorrect?: SortOrder
+    totalAttempt?: SortOrder
+    result?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AttemptAvgOrderByAggregateInput = {
+    totalCorrect?: SortOrder
+    totalIncorrect?: SortOrder
+    totalAttempt?: SortOrder
+    result?: SortOrder
+  }
+
+  export type AttemptMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    mockType?: SortOrder
+    totalCorrect?: SortOrder
+    totalIncorrect?: SortOrder
+    totalAttempt?: SortOrder
+    result?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AttemptMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    mockType?: SortOrder
+    totalCorrect?: SortOrder
+    totalIncorrect?: SortOrder
+    totalAttempt?: SortOrder
+    result?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AttemptSumOrderByAggregateInput = {
+    totalCorrect?: SortOrder
+    totalIncorrect?: SortOrder
+    totalAttempt?: SortOrder
+    result?: SortOrder
+  }
+
+  export type EnumMockTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MockType | EnumMockTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.MockType[] | ListEnumMockTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MockType[] | ListEnumMockTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumMockTypeWithAggregatesFilter<$PrismaModel> | $Enums.MockType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMockTypeFilter<$PrismaModel>
+    _max?: NestedEnumMockTypeFilter<$PrismaModel>
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
   export type QuestionCreatetagsInput = {
     set: string[]
   }
@@ -3904,6 +5229,18 @@ export namespace Prisma {
     upsert?: QuestionUpsertWithoutAnswersInput
     connect?: QuestionWhereUniqueInput
     update?: XOR<XOR<QuestionUpdateToOneWithWhereWithoutAnswersInput, QuestionUpdateWithoutAnswersInput>, QuestionUncheckedUpdateWithoutAnswersInput>
+  }
+
+  export type EnumMockTypeFieldUpdateOperationsInput = {
+    set?: $Enums.MockType
+  }
+
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -4070,6 +5407,39 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumMockTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.MockType | EnumMockTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.MockType[] | ListEnumMockTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MockType[] | ListEnumMockTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumMockTypeFilter<$PrismaModel> | $Enums.MockType
+  }
+
+  export type NestedEnumMockTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MockType | EnumMockTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.MockType[] | ListEnumMockTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MockType[] | ListEnumMockTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumMockTypeWithAggregatesFilter<$PrismaModel> | $Enums.MockType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMockTypeFilter<$PrismaModel>
+    _max?: NestedEnumMockTypeFilter<$PrismaModel>
+  }
+
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type AnswerCreateWithoutQuestionInput = {
@@ -4263,6 +5633,10 @@ export namespace Prisma {
      * @deprecated Use AnswerDefaultArgs instead
      */
     export type AnswerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = AnswerDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use AttemptDefaultArgs instead
+     */
+    export type AttemptArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = AttemptDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany

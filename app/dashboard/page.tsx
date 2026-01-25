@@ -16,10 +16,10 @@ export default function Dashboard() {
       } = await supabase.auth.getUser();
       console.log(typeof user);
       setUser(user);
-      console.log(typeof user, user);
+      // console.log(typeof user, user);
     }
     saveUser();
-    console.log("Logged in from dashboard", user, typeof user);
+    // console.log("Logged in from dashboard", user, typeof user);
   }, []);
   return (
     <>

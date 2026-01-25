@@ -1,5 +1,6 @@
 "use client";
 import { useRef } from "react";
+import { toast } from "sonner";
 export default function Learn() {
   const userRefrence = useRef<HTMLInputElement>(null);
   return (
@@ -14,6 +15,11 @@ export default function Learn() {
       >
         click me
       </button>
+      <div className="pt-20">
+        <button onClick={() => toast.success("This is a toast message!")}>
+          Check Toast
+        </button>
+      </div>
     </div>
   );
 }

@@ -19,7 +19,7 @@ export default function Result() {
     saveUser();
     console.log("Logged in from dashboard", user, typeof user);
   }, []);
-  console.log(user, "from result");
+  // console.log(user, "from result");
   const router = useRouter();
   const { correctCount, inncorrectCount, isSubmitted } = useValidateContext();
   const total = correctCount + inncorrectCount;
