@@ -18,11 +18,11 @@ export default function SideBar() {
   const [selected, setSelected] = useState("dashboard");
   const [toogleMenu, setToogleMenu] = useState(true);
   const options = [
-    { name: "Dashboard", icon: <Home></Home> },
-    { name: "Mock Interviews", icon: <Mic></Mic> },
-    { name: "Profle", icon: <User></User> },
-    { name: "Feedback", icon: <ClipboardCheck></ClipboardCheck> },
-    { name: "Settings", icon: <Settings></Settings> },
+    { name: "Dashboard", icon: <Home /> },
+    { name: "Mock Interviews", icon: <Mic /> },
+    { name: "Profle", icon: <User /> },
+    { name: "Feedback", icon: <ClipboardCheck /> },
+    { name: "Settings", icon: <Settings /> },
   ];
   const selectedClass = "border-r-3 border-primary";
 

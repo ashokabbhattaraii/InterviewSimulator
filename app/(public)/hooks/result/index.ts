@@ -1,8 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
-import { de } from "zod/locales";
 import { useValidateContext } from "@/app/dashboard/Context/ValidateContext";
 import { useAuthStore } from "@/app/(auth)/store/userAuth";
 import { MockType } from "@/prisma/generated/client";
+import { useRouter } from "next/navigation";
+
 interface resultType {
   userId: string;
   mockType: MockType;
@@ -13,10 +14,13 @@ interface resultType {
 }
 
 export default function useManageResult() {
+  const { user } = useAuthStore();
+  const { correctCount, inncorrectCount, setLastAttempt } =
+    useValidateContext();
+  const router = useRouter();
+
   return useMutation<resultType>({
     mutationFn: async () => {
-      const { user } = useAuthStore();
-      const { correctCount, inncorrectCount } = useValidateContext();
       const totalAttempt = correctCount + inncorrectCount;
       const payload: resultType = {
         userId: user?.id || "",
@@ -36,9 +40,8 @@ export default function useManageResult() {
         body: JSON.stringify(payload),
       });
 
-      console.log("Payload data", payload);
       if (!response.ok) {
-        throw new Error("Failed to updated attemps");
+        throw new Error("Failed to update attempts");
       }
       return response.json();
     },

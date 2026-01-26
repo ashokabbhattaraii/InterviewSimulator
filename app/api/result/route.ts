@@ -10,7 +10,7 @@ interface resultType {
   totalIncorrect: number;
   result: number;
 }
-export default async function POST(request: NextRequest) {
+export async function POST(request: NextRequest) {
   const body: resultType = await request.json();
   console.log("Result data", body);
   try {

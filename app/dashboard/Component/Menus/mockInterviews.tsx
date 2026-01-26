@@ -1,5 +1,7 @@
 "use client";
 import Link from "next/link";
+import { useEffect } from "react";
+import { useValidateContext } from "../../Context/ValidateContext";
 
 export default function MockInterviews() {
   const interviewTypes = [
@@ -70,7 +72,10 @@ export default function MockInterviews() {
       comingSoon: true,
     },
   ];
-
+  const { resetCounts } = useValidateContext();
+  useEffect(() => {
+    resetCounts();
+  }, []);
   return (
     <div className="flex-1 p-6 text-foreground">
       <div className="mb-8">

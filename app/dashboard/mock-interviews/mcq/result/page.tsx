@@ -2,30 +2,46 @@
 import { useRouter } from "next/navigation";
 import { useValidateContext } from "@/app/dashboard/Context/ValidateContext";
 import { useAuthStore } from "@/app/(auth)/store/userAuth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import createClient from "@/lib/client/client";
+import useManageResult from "@/app/(public)/hooks/result";
+
 export default function Result() {
   const { setUser, user } = useAuthStore();
+  const [isSaved, setIsSaved] = useState(false);
+
   useEffect(() => {
     async function saveUser() {
       const supabase = await createClient();
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      console.log(typeof user);
-      console.log(typeof user, user);
       setUser(user);
     }
     saveUser();
-    console.log("Logged in from dashboard", user, typeof user);
-  }, []);
-  // console.log(user, "from result");
-  const router = useRouter();
-  const { correctCount, inncorrectCount, isSubmitted } = useValidateContext();
-  const total = correctCount + inncorrectCount;
-  const percentage = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+  }, [setUser]);
 
-  const firstName = user?.user_metadata?.firstName || "User";
+  const router = useRouter();
+  const {
+    lastAttempt,
+    isSubmitted,
+    correctCount,
+    inncorrectCount,
+    resetCounts,
+  } = useValidateContext();
+  const { mutate: handleSubmit } = useManageResult();
+
+  useEffect(() => {
+    if (!isSaved && lastAttempt && user) {
+      handleSubmit();
+      setIsSaved(true);
+      resetCounts();
+    }
+  }, [isSaved]);
+  const total = correctCount + inncorrectCount;
+  const percentage = total
+    ? Math.round((correctCount / (correctCount + inncorrectCount)) * 100)
+    : 0;
 
   const getPerformanceColor = () => {
     if (percentage >= 80) return "text-green-600";
@@ -38,11 +54,15 @@ export default function Result() {
     if (percentage >= 60) return "Good Job!";
     return "Keep Practicing!";
   };
+
   if (!isSubmitted) return router.replace("/404");
+
   return (
     <div className="min-h-screen bg-background p-4 flex items-center justify-center">
       <button
-        onClick={() => router.push("/dashboard")}
+        onClick={() => {
+          router.push("/dashboard");
+        }}
         className="absolute top-6 left-6 flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
       >
         <svg
@@ -78,7 +98,7 @@ export default function Result() {
               <h2 className="text-2xl font-bold text-primary">
                 Congratulations,{" "}
                 <span className="text-foreground">
-                  {user?.user_metadata.firstName}
+                  {user?.user_metadata?.firstName || "User"}
                 </span>
                 ! 🎉
               </h2>
@@ -156,7 +176,7 @@ export default function Result() {
             </div>
 
             <button
-              onClick={() => router.push("/dashboard")}
+              onClick={() => router.push("/dashboard/mock-interviews")}
               className="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-all shadow-lg"
             >
               Back to Interviews

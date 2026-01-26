@@ -27,8 +27,17 @@ export default function MCQInterview() {
     initialSeconds: 20,
   });
   const router = useRouter();
-  const { isSubmitted, setIsSubmitted } = useValidateContext();
+  const {
+    isSubmitted,
+    setIsSubmitted,
+    setLastAttempt,
+    setCorrectCount,
+    setInncorrectCount,
+    setIsResultSubmitted,
+    isResultSubmitted,
+  } = useValidateContext();
   const [currentIndex, setCurrentIndex] = useState(0);
+
   const { mutate: handleSubmit } = useManageResult();
   function manageQns(btnType: "prev" | "next" | "submit") {
     if (btnType == "next") {
@@ -39,8 +48,6 @@ export default function MCQInterview() {
       setIsSubmitted(false);
     } else if (btnType == "submit") {
       handleSubmit();
-      console.log("Submitting quiz, navigating to result...");
-
       setIsSubmitted(true);
       router.push("/dashboard/mock-interviews/mcq/result");
     } else {
@@ -82,8 +89,8 @@ export default function MCQInterview() {
                 d="M15 19l-7-7 7-7"
               />
             </svg>
-            Back to Mock Interviews
           </button>
+          Back to Mock Interviews
           <div className="flex items-center gap-4 ">
             <div className="text-sm text-slate-400">
               Question {currentIndex + 1} of {qnsLength}
@@ -136,7 +143,8 @@ export default function MCQInterview() {
           </button>
 
           <button
-            className="px-6 py-3 bg-linear-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-blue-600 transition-all shadow-lg cursor-pointer "
+            disabled={isResultSubmitted}
+            className="px-6 py-3 bg-linear-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-500 hover:to-blue-600 transition-all shadow-lg cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
             onClick={() =>
               currentIndex == qnsLength - 1
                 ? manageQns("submit")
