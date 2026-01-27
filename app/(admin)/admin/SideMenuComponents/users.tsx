@@ -23,6 +23,7 @@ interface userType {
 
 interface GetUsersResponse {
   success: boolean;
+  setIsEditing;
   user: userType[] | null;
 }
 
@@ -39,6 +40,9 @@ export default function User() {
   const [isDisabled, setIsDisabled] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState<string | null>(null);
+  const [selectedUserData, setSelectedUserData] = useState<
+    userType | undefined
+  >(undefined);
 
   function managePage(direction: "next" | "prev") {
     if (direction == "next") {
@@ -56,8 +60,13 @@ export default function User() {
     },
     refetchInterval: 1000 * 60,
   });
+  function manageEdit() {
+    const userData = data?.user?.find((user) => user.id === editUserId);
+    setSelectedUserData(userData);
+    console.log("Data of selected user", userData);
+    setIsEditing(true);
+  }
 
-  // DEBUG: Log the data to see what's being returned
   useEffect(() => {
     console.log("=== USER COMPONENT DEBUG ===");
     console.log("Data:", data);
@@ -82,7 +91,6 @@ export default function User() {
         });
       });
     }
-    console.log("=== END DEBUG ===");
   }, [data]);
 
   function handleDelete(userId: string) {
@@ -190,7 +198,7 @@ export default function User() {
                   <div className="flex justify-center items-center gap-2 text-muted-foreground hover:text-foreground">
                     <Edit
                       onClick={() => {
-                        setIsEditing(true);
+                        manageEdit();
                         setEditUserId(u.id);
                       }}
                       className="hover:text-blue-500 cursor-pointer"
@@ -264,7 +272,9 @@ export default function User() {
         </div>
       )}
 
-      {isEditing && <EditUser />}
+      {isEditing && selectedUserData && (
+        <EditUser selectedUserData={selectedUserData} />
+      )}
     </div>
   );
 }

@@ -23,8 +23,8 @@ export default function GetEditUser() {
 
 export function useUpdateUser(formData: EditUserFormData, userId: string) {
   return useMutation({
-    mutationKey: ["updateUser"],
-    mutationFn: async () => {
+    mutationKey: ["updateUser", userId],
+    mutationFn: async (formData: EditUserFormData) => {
       const res = await fetch("/api/editUser", {
         method: "PATCH",
         headers: {
@@ -33,6 +33,11 @@ export function useUpdateUser(formData: EditUserFormData, userId: string) {
         },
         body: JSON.stringify(formData),
       });
+
+      if (!res.ok) {
+        throw new Error("Failed to update user");
+      }
+
       return res.json();
     },
   });

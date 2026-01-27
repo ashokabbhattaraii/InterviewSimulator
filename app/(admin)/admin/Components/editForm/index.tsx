@@ -7,6 +7,8 @@ import { useFormContext } from "../../Context";
 import GetEditUser from "@/app/(public)/hooks/user";
 import { useEffect } from "react";
 import { useUpdateUser } from "@/app/(public)/hooks/user";
+import { string } from "zod";
+
 interface editFormType {
   fistName: string;
   lastName: string;
@@ -16,7 +18,25 @@ interface editFormType {
   username: string;
   status?: string;
 }
-export default function EditUser() {
+interface userType {
+  phone: string;
+  id: string;
+  email: string;
+  created_at: string;
+  user_metadata: {
+    firstName?: string;
+    lastName?: string;
+    username?: string;
+  };
+  app_metadata: {
+    role?: string;
+  };
+}
+interface EditUserProps {
+  selectedUserData?: userType;
+}
+
+export default function EditUser(selectedUserData: EditUserProps) {
   const {
     register,
     handleSubmit,
@@ -28,30 +48,29 @@ export default function EditUser() {
   const { isEditing, setIsEditing, editUserId, setEditUserId } =
     useFormContext();
 
-  console.log("id of edit user", editUserId);
-  const { data, isFetching, error } = GetEditUser();
-  const { mutate: updateUser } = useUpdateUser(data, editUserId);
-  function update(data: EditUserFormData) {
-    console.log("Update form data", data);
-    updateUser();
-  }
-  const editUserData = data?.data?.user;
-  console.log("Edit user data", editUserData);
-  useEffect(() => {
-    // Use optional chaining to safely drill down to the user object
-    const user = data?.data?.user;
+  console.log("datta of edit user from form componsnet", selectedUserData);
 
-    if (user) {
+  const { mutate: updateUser } = useUpdateUser(FormData, editUserId);
+
+  function update(FormData: EditUserFormData) {
+    console.log("Update form data", FormData);
+    const res = updateUser(FormData);
+    setIsEditing(false);
+  }
+
+  useEffect(() => {
+    if (selectedUserData?.selectedUserData) {
+      const user = selectedUserData.selectedUserData;
       reset({
         firstName: user.user_metadata?.firstName || "",
         lastName: user.user_metadata?.lastName || "",
         email: user.email || "",
         phone: user.phone || "",
-        role: user.app_metadata?.role || "user",
+        role: (user.app_metadata?.role || "user") as "user" | "admin",
         status: "active",
       });
     }
-  }, [data, reset]);
+  }, [selectedUserData, reset]);
 
   return (
     <>
@@ -71,7 +90,6 @@ export default function EditUser() {
                 <input
                   type="text"
                   id="firstName"
-                  //   defaultValue={editUserData.user_metadata.firstName}
                   placeholder="John"
                   {...register("firstName")}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -91,7 +109,6 @@ export default function EditUser() {
                 <input
                   type="text"
                   id="lastName"
-                  //   defaultValue={editUserData?.user_metadata.lastName}
                   placeholder="Doe"
                   {...register("lastName")}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -114,7 +131,7 @@ export default function EditUser() {
                 <input
                   type="email"
                   id="email"
-                  //   defaultValue={editUserData.email}
+                  defaultValue={selectedUserData?.email}
                   {...register("email")}
                   placeholder="john@example.com"
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -132,7 +149,7 @@ export default function EditUser() {
                   Phone
                 </label>
                 <input
-                  type="number"
+                  type="tel"
                   id="phone"
                   {...register("phone")}
                   placeholder="+1 (555) 000-0000"
@@ -156,7 +173,6 @@ export default function EditUser() {
                 <select
                   id="role"
                   {...register("role")}
-                  //   defaultValue={editUserData.app_metadata.role}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="user">user</option>
@@ -186,17 +202,17 @@ export default function EditUser() {
             {/* Buttons - Full width on mobile, side by side on desktop */}
             <div className="flex flex-col sm:flex-row gap-3 pt-4">
               <button
-                type="submit"
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-md transition"
-              >
-                Save Changes
-              </button>
-              <button
                 type="button"
                 onClick={() => setIsEditing(false)}
                 className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2.5 px-4 rounded-md transition"
               >
                 Cancel
+              </button>
+              <button
+                type="submit"
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-md transition"
+              >
+                Save Changes
               </button>
             </div>
           </form>
