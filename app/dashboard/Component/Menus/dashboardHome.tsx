@@ -1,7 +1,56 @@
 import { useAuthStore } from "@/app/(auth)/store/userAuth";
-
+import { getAttemptResult } from "@/app/(public)/hooks/result";
+import calculateStreak from "../calculateStreak";
+import { MockType } from "@/prisma/generated/client/edge";
+import { useRouter } from "next/navigation";
+interface resultType {
+  userId: string;
+  mockType: MockType;
+  totalAttempt: number;
+  totalCorrect: number;
+  totalIncorrect: number;
+  result: number;
+  createdAt?: string | Date;
+}
 export default function DashboardHome() {
   const { user } = useAuthStore();
+  const router = useRouter();
+  console.log("UIser", user);
+  const { data, isFetching, error, isLoading } = getAttemptResult();
+  console.log("Attempt data in dashboard home", data);
+  const userAttemptData = data?.data;
+
+  const totals = userAttemptData?.reduce(
+    (
+      acc: { correct: number; incorrect: number; total: number },
+      item: resultType,
+    ) => {
+      acc.correct += item.totalCorrect;
+      acc.incorrect += item.totalIncorrect;
+      acc.total += item.totalAttempt;
+      return acc;
+    },
+    {
+      correct: 0,
+      incorrect: 0,
+      total: 0,
+    },
+  );
+  const userSuccessRate =
+    Math.round((totals?.correct / totals?.total) * 100) || 0;
+  const streak = calculateStreak(
+    userAttemptData?.map((attempt: resultType) => ({
+      createdAt: attempt.createdAt,
+    })) || [],
+  );
+
+  const getResultColor = (result: number) => {
+    if (result >= 80) return "text-primary";
+    if (result >= 60) return "text-secondary";
+    return "text-destructive";
+  };
+
+  console.log("User streak:", streak);
 
   return (
     <div className="min-h-screen w-full max-w-8xl bg-background text-foreground transition-all ease-in-out duration-200">
@@ -18,42 +67,58 @@ export default function DashboardHome() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
-          <div className="bg-card rounded-lg p-4 sm:p-6 border border-border hover:border-primary/50 transition shadow-sm">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-8">
+          <div
+            className={`bg-card rounded-lg p-4 sm:p-6 border border-border hover:border-primary/50 transition shadow-sm ${isFetching ? "animate-pulse" : ""}`}
+          >
             <div className="text-muted-foreground text-xs sm:text-sm mb-2">
               Total Interviews
             </div>
             <div className="text-2xl sm:text-3xl font-bold text-card-foreground">
-              12
+              {isFetching ? (
+                <div className="h-8 bg-muted rounded w-12 animate-pulse"></div>
+              ) : (
+                data?.data.length || 0
+              )}
             </div>
-            <div className="text-primary text-xs mt-2">↑ 2 this week</div>
+            <div className="text-primary text-xs mt-2">
+              {isFetching ? "Loading..." : "↑ 2 this week"}
+            </div>
           </div>
-          <div className="bg-card rounded-lg p-4 sm:p-6 border border-border hover:border-primary/50 transition shadow-sm">
+
+          <div
+            className={`bg-card rounded-lg p-4 sm:p-6 border border-border hover:border-primary/50 transition shadow-sm ${isFetching ? "animate-pulse" : ""}`}
+          >
             <div className="text-muted-foreground text-xs sm:text-sm mb-2">
               Success Rate
             </div>
-            <div className="text-2xl sm:text-3xl font-bold text-card-foreground">
-              87%
+            <div className="text-2xl sm:text-3xl font-bold text-card-foreground ">
+              {isFetching ? (
+                <div className="h-8 bg-muted rounded w-12 animate-pulse"></div>
+              ) : (
+                `${userSuccessRate}%`
+              )}
             </div>
-            <div className="text-primary text-xs mt-2">↑ 5% improvement</div>
+            <div className="text-primary text-xs mt-2 ">
+              {isFetching ? "Loading..." : "↑ 5% improvement"}
+            </div>
           </div>
           <div className="bg-card rounded-lg p-4 sm:p-6 border border-border hover:border-primary/50 transition shadow-sm">
             <div className="text-muted-foreground text-xs sm:text-sm mb-2">
-              Streak
+              Current Streak
             </div>
             <div className="text-2xl sm:text-3xl font-bold text-card-foreground">
-              5 days
+              {isFetching ? (
+                <div className="h-8 bg-muted rounded w-12 animate-pulse"></div>
+              ) : (
+                streak
+              )}
             </div>
-            <div className="text-primary text-xs mt-2">Keep it up!</div>
-          </div>
-          <div className="bg-card rounded-lg p-4 sm:p-6 border border-border hover:border-primary/50 transition shadow-sm">
-            <div className="text-muted-foreground text-xs sm:text-sm mb-2">
-              Skills Mastered
-            </div>
-            <div className="text-2xl sm:text-3xl font-bold text-card-foreground">
-              8
-            </div>
-            <div className="text-secondary text-xs mt-2">3 in progress</div>
+            {isFetching ? (
+              <div className="text-primary text-xs mt-2 ">Loading...</div>
+            ) : (
+              "Keep it up!"
+            )}
           </div>
         </div>
 
@@ -64,17 +129,32 @@ export default function DashboardHome() {
                 Start New Interview
               </h2>
               <div className="grid grid-cols-2 sm:grid-cols-2 gap-2 sm:gap-3">
-                <button className="bg-primary text-primary-foreground hover:bg-primary/90 py-2 sm:py-3 px-3 sm:px-4 rounded-lg font-semibold transition text-sm sm:text-base shadow-md">
-                  Technical
+                <button
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 py-2 sm:py-3 px-3 sm:px-4 rounded-lg font-semibold transition text-sm sm:text-base shadow-md cursor-pointer"
+                  onClick={() => router.push("/dashboard/mock-interviews/mcq")}
+                >
+                  MCQ
                 </button>
-                <button className="bg-secondary text-secondary-foreground hover:bg-secondary/90 py-2 sm:py-3 px-3 sm:px-4 rounded-lg font-semibold transition text-sm sm:text-base shadow-md">
-                  Behavioral
+                <button
+                  disabled
+                  className="bg-muted text-muted-foreground cursor-not-allowed py-2 sm:py-3 px-3 sm:px-4 rounded-lg font-semibold opacity-50 text-sm sm:text-base shadow-md"
+                  title="Coming Soon"
+                >
+                  Technical <span className="text-xs">(Soon)</span>
                 </button>
-                <button className="bg-primary text-primary-foreground hover:bg-primary/90 py-2 sm:py-3 px-3 sm:px-4 rounded-lg font-semibold transition text-sm sm:text-base shadow-md">
-                  System Design
+                <button
+                  disabled
+                  className="bg-muted text-muted-foreground cursor-not-allowed py-2 sm:py-3 px-3 sm:px-4 rounded-lg font-semibold opacity-50 text-sm sm:text-base shadow-md"
+                  title="Coming Soon"
+                >
+                  Behavioral <span className="text-xs">(Soon)</span>
                 </button>
-                <button className="bg-secondary text-secondary-foreground hover:bg-secondary/90 py-2 sm:py-3 px-3 sm:px-4 rounded-lg font-semibold transition text-sm sm:text-base shadow-md">
-                  Mock Interview
+                <button
+                  disabled
+                  className="bg-muted text-muted-foreground cursor-not-allowed py-2 sm:py-3 px-3 sm:px-4 rounded-lg font-semibold opacity-50 text-sm sm:text-base shadow-md"
+                  title="Coming Soon"
+                >
+                  System Design <span className="text-xs">(Soon)</span>
                 </button>
               </div>
             </div>
@@ -112,45 +192,39 @@ export default function DashboardHome() {
             Recent Activity
           </h2>
           <div className="space-y-3 sm:space-y-4">
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center pb-3 border-b border-border gap-2">
-              <div className="min-w-0">
-                <p className="font-semibold text-sm sm:text-base text-foreground">
-                  Technical Interview
-                </p>
-                <p className="text-muted-foreground text-xs sm:text-sm truncate">
-                  JavaScript Fundamentals
-                </p>
+            {isFetching ? (
+              <div className="text-muted-foreground text-sm">Loading...</div>
+            ) : userAttemptData && userAttemptData.length > 0 ? (
+              userAttemptData
+                .slice(-3)
+
+                .map((attempt: resultType, index: number) => (
+                  <div
+                    key={index}
+                    className="flex flex-col sm:flex-row sm:justify-between sm:items-center pb-3 border-b border-border gap-2 last:border-b-0"
+                  >
+                    <div className="min-w-0">
+                      <p className="font-semibold text-sm sm:text-base text-foreground capitalize">
+                        {attempt.mockType.replace(/_/g, " ")}
+                      </p>
+                      <p className="text-muted-foreground text-xs sm:text-sm truncate">
+                        {new Date(
+                          attempt?.createdAt || "",
+                        ).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <span
+                      className={`text-sm sm:text-base font-semibold ${getResultColor(attempt.result)}`}
+                    >
+                      {Math.round(attempt.result)}%
+                    </span>
+                  </div>
+                ))
+            ) : (
+              <div className="text-muted-foreground text-sm">
+                No attempts yet. Start your first interview!
               </div>
-              <span className="text-primary text-sm sm:text-base font-semibold">
-                85%
-              </span>
-            </div>
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center pb-3 border-b border-border gap-2">
-              <div className="min-w-0">
-                <p className="font-semibold text-sm sm:text-base text-foreground">
-                  Behavioral Interview
-                </p>
-                <p className="text-muted-foreground text-xs sm:text-sm truncate">
-                  Leadership & Teamwork
-                </p>
-              </div>
-              <span className="text-primary text-sm sm:text-base font-semibold">
-                92%
-              </span>
-            </div>
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-              <div className="min-w-0">
-                <p className="font-semibold text-sm sm:text-base text-foreground">
-                  Mock Interview
-                </p>
-                <p className="text-muted-foreground text-xs sm:text-sm truncate">
-                  Full Stack Position
-                </p>
-              </div>
-              <span className="text-secondary text-sm sm:text-base font-semibold">
-                78%
-              </span>
-            </div>
+            )}
           </div>
         </div>
       </div>

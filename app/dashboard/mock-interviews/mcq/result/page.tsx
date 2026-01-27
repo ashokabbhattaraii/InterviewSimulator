@@ -176,7 +176,7 @@ export default function Result() {
             </div>
 
             <button
-              onClick={() => router.push("/dashboard/mock-interviews")}
+              onClick={() => router.push("/dashboard")}
               className="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-all shadow-lg"
             >
               Back to Interviews

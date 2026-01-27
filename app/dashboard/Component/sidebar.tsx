@@ -14,13 +14,14 @@ import DashboardHome from "./Menus/dashboardHome";
 import { signOut } from "@/app/(auth)/AuthActions/auth";
 import SettingsMenu from "./Menus/settings";
 import MockInterviews from "./Menus/mockInterviews";
+import Profile from "./Menus/profile";
 export default function SideBar() {
   const [selected, setSelected] = useState("dashboard");
   const [toogleMenu, setToogleMenu] = useState(true);
   const options = [
     { name: "Dashboard", icon: <Home /> },
     { name: "Mock Interviews", icon: <Mic /> },
-    { name: "Profle", icon: <User /> },
+    { name: "Profile", icon: <User /> },
     { name: "Feedback", icon: <ClipboardCheck /> },
     { name: "Settings", icon: <Settings /> },
   ];
@@ -74,11 +75,11 @@ export default function SideBar() {
         <div
           className={`${toogleMenu ? "ml-64" : "ml-18"} flex pt-22 w-full px-6 transition-all ease-in-out duration-200`}
         >
-          {selected == "dashboard" && <DashboardHome></DashboardHome>}
-          {selected == "mock interviews" && <MockInterviews></MockInterviews>}
-          {selected == "profile" && <DashboardHome></DashboardHome>}
-          {selected == "feedback" && <DashboardHome></DashboardHome>}
-          {selected == "settings" && <SettingsMenu></SettingsMenu>}
+          {selected === "dashboard" && <DashboardHome />}
+          {selected === "mock interviews" && <MockInterviews />}
+          {selected === "profile" && <Profile />}
+          {selected === "feedback" && <DashboardHome />}
+          {selected === "settings" && <SettingsMenu />}
         </div>
       </div>
     </>

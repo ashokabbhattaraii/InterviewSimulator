@@ -230,8 +230,8 @@ const AdminDashboard = () => {
           </div>
         </header>
 
-        {activeTab == "questions" && <Questions></Questions>}
-        {activeTab == "users" && <User></User>}
+        {activeTab == "questions" && <Questions />}
+        {activeTab == "users" && <User />}
       </div>
     </div>
   );

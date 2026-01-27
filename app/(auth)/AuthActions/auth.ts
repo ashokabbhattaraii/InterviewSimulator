@@ -18,6 +18,19 @@ interface user {
   confirm: string;
   role: string;
 }
+interface userType {
+  id: string;
+  email: string;
+  created_at: string;
+  user_metadata: {
+    firstName?: string;
+    lastName?: string;
+    username?: string;
+  };
+  app_metadata: {
+    role?: string;
+  };
+}
 
 export async function signUp(formData: user) {
   const supabase = await createClient();

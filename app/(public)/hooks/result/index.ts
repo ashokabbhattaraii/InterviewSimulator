@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useValidateContext } from "@/app/dashboard/Context/ValidateContext";
 import { useAuthStore } from "@/app/(auth)/store/userAuth";
 import { MockType } from "@/prisma/generated/client";
@@ -11,6 +11,7 @@ interface resultType {
   totalCorrect: number;
   totalIncorrect: number;
   result: number;
+  createdAt?: String | Date;
 }
 
 export default function useManageResult() {
@@ -42,6 +43,21 @@ export default function useManageResult() {
 
       if (!response.ok) {
         throw new Error("Failed to update attempts");
+      }
+      return response.json();
+    },
+  });
+}
+
+export function getAttemptResult() {
+  return useQuery({
+    queryKey: ["attemptResult"],
+    queryFn: async () => {
+      const response = await fetch(`/api/result`, {
+        method: "GET",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch attempt result");
       }
       return response.json();
     },
