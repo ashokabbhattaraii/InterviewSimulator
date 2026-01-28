@@ -15,6 +15,7 @@ import { signOut } from "@/app/(auth)/AuthActions/auth";
 import SettingsMenu from "./Menus/settings";
 import MockInterviews from "./Menus/mockInterviews";
 import Profile from "./Menus/profile";
+import { useAuthStore } from "@/app/(auth)/store/userAuth";
 export default function SideBar() {
   const [selected, setSelected] = useState("dashboard");
   const [toogleMenu, setToogleMenu] = useState(true);
@@ -26,7 +27,7 @@ export default function SideBar() {
     { name: "Settings", icon: <Settings /> },
   ];
   const selectedClass = "border-r-3 border-primary";
-
+  const { user } = useAuthStore();
   async function logout() {
     await signOut();
   }
@@ -77,7 +78,7 @@ export default function SideBar() {
         >
           {selected === "dashboard" && <DashboardHome />}
           {selected === "mock interviews" && <MockInterviews />}
-          {selected === "profile" && <Profile />}
+          {selected === "profile" && <Profile user={user} />}
           {selected === "feedback" && <DashboardHome />}
           {selected === "settings" && <SettingsMenu />}
         </div>

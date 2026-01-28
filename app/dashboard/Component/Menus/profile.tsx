@@ -2,27 +2,78 @@
 
 import { useState } from "react";
 import { Mail, Phone, MapPin, Edit2, Save, X, Camera } from "lucide-react";
-
-export default function Profile() {
+import useUpdateProfileMutation from "@/app/(public)/hooks/profile";
+import UserResult from "../userResult";
+interface userType {
+  id: string;
+  phone: string;
+  email: string;
+  created_at: string;
+  app_metadata: {
+    role?: string;
+    provider?: string;
+    providers?: string[];
+  };
+  user_metadata: {
+    firstName?: string;
+    lastName?: string;
+    username?: string;
+    email?: string;
+    email_verified?: boolean;
+    user_metadata?: {
+      bio?: string;
+      firstName?: string;
+      lastName?: string;
+      location?: string;
+      phone?: string;
+    };
+  };
+}
+interface UpdateProfilePayload {
+  name: string;
+  phone?: string;
+  bio: string;
+  location: string;
+  avatar: string;
+}
+interface ProfileProps {
+  user: userType | null;
+}
+export default function Profile(user: ProfileProps) {
   const [isEditing, setIsEditing] = useState(false);
-  const [profile, setProfile] = useState({
-    name: "John Doe",
-    email: "john@example.com",
-    phone: "+1 234 567 8900",
-    bio: "Software Developer | Interview Enthusiast",
-    location: "San Francisco, CA",
+  const {
+    streak,
+    isFetching,
+    data,
+    userSuccessRate,
+    userAttemptData,
+    totalInterview,
+  } = UserResult();
+  const loggedUser = user?.user;
+  const fullname =
+    (loggedUser?.user_metadata?.firstName || "") +
+    " " +
+    (loggedUser?.user_metadata?.lastName || "");
+  const nestedMeta = loggedUser?.user_metadata?.user_metadata || {};
+  const [profile, setProfile] = useState<UpdateProfilePayload>({
+    name: fullname || "",
+
+    phone: loggedUser?.user_metadata?.user_metadata?.phone || "",
+    bio: nestedMeta?.bio || "",
+    location: nestedMeta?.location || "",
     avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=John",
-    joinDate: "Jan 2024",
-    skills: ["React", "TypeScript", "Node.js", "Python"],
-    interviews: 45,
-    successRate: 87,
   });
+  const { mutate: handleEdit } = useUpdateProfileMutation(profile);
 
   const handleChange = (field: string, value: string) => {
     setProfile({ ...profile, [field]: value });
   };
+  const joinedDate = loggedUser?.created_at
+    ? new Date(loggedUser.created_at).toLocaleDateString()
+    : "";
 
   const handleSave = () => {
+    handleEdit(profile);
     setIsEditing(false);
   };
 
@@ -60,7 +111,7 @@ export default function Profile() {
         {/* Main Profile Card */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden mb-8">
           {/* Cover Section */}
-          <div className="h-32 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+          <div className="h-32 bg-slate-400"></div>
 
           {/* Profile Info */}
           <div className="px-8 pb-8">
@@ -83,14 +134,14 @@ export default function Profile() {
                     type="text"
                     value={profile.name}
                     onChange={(e) => handleChange("name", e.target.value)}
-                    className="text-3xl font-bold text-gray-900 mb-2 w-full px-3 py-2 border border-gray-300 rounded-lg"
+                    className="text-2xl font-bold text-gray-900 mb-2 w-full px-3 py-2 border border-gray-300 rounded-lg"
                   />
                 ) : (
-                  <h2 className="text-3xl font-bold text-gray-900">
+                  <h2 className="text-2xl font-bold text-gray-900">
                     {profile.name}
                   </h2>
                 )}
-                <p className="text-gray-600 mt-2">Joined {profile.joinDate}</p>
+                <p className="text-gray-600 mt-2">Joined </p>
               </div>
             </div>
 
@@ -120,16 +171,7 @@ export default function Profile() {
                     Email
                   </label>
                 </div>
-                {isEditing ? (
-                  <input
-                    type="email"
-                    value={profile.email}
-                    onChange={(e) => handleChange("email", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-                ) : (
-                  <p className="text-gray-600">{profile.email}</p>
-                )}
+                <p className="text-gray-600">{loggedUser?.email}</p>
               </div>
 
               <div className="bg-gray-50 p-4 rounded-xl">
@@ -147,7 +189,9 @@ export default function Profile() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 ) : (
-                  <p className="text-gray-600">{profile.phone}</p>
+                  <p className="text-gray-600">
+                    {loggedUser?.user_metadata?.user_metadata?.phone}
+                  </p>
                 )}
               </div>
 
@@ -190,8 +234,8 @@ export default function Profile() {
             <p className="text-gray-600 text-sm font-semibold mb-2">
               Total Interviews
             </p>
-            <p className="text-4xl font-bold text-indigo-600">
-              {profile.interviews}
+            <p className="text-2xl font-bold text-indigo-600">
+              {totalInterview}
             </p>
           </div>
 
@@ -200,8 +244,8 @@ export default function Profile() {
             <p className="text-gray-600 text-sm font-semibold mb-2">
               Success Rate
             </p>
-            <p className="text-4xl font-bold text-green-600">
-              {profile.successRate}%
+            <p className="text-2xl font-bold text-green-600">
+              {userSuccessRate}%
             </p>
           </div>
 
@@ -210,9 +254,7 @@ export default function Profile() {
             <p className="text-gray-600 text-sm font-semibold mb-2">
               Member Since
             </p>
-            <p className="text-2xl font-bold text-purple-600">
-              {profile.joinDate}
-            </p>
+            <p className="text-xl  font-bold text-purple-600">{joinedDate}</p>
           </div>
         </div>
       </div>

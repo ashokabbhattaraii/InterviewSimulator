@@ -3,6 +3,7 @@ import { getAttemptResult } from "@/app/(public)/hooks/result";
 import calculateStreak from "../calculateStreak";
 import { MockType } from "@/prisma/generated/client/edge";
 import { useRouter } from "next/navigation";
+import UserResult from "../userResult";
 interface resultType {
   userId: string;
   mockType: MockType;
@@ -12,38 +13,11 @@ interface resultType {
   result: number;
   createdAt?: string | Date;
 }
+
 export default function DashboardHome() {
-  const { user } = useAuthStore();
   const router = useRouter();
-  console.log("UIser", user);
-  const { data, isFetching, error, isLoading } = getAttemptResult();
-  console.log("Attempt data in dashboard home", data);
-  const userAttemptData = data?.data;
-
-  const totals = userAttemptData?.reduce(
-    (
-      acc: { correct: number; incorrect: number; total: number },
-      item: resultType,
-    ) => {
-      acc.correct += item.totalCorrect;
-      acc.incorrect += item.totalIncorrect;
-      acc.total += item.totalAttempt;
-      return acc;
-    },
-    {
-      correct: 0,
-      incorrect: 0,
-      total: 0,
-    },
-  );
-  const userSuccessRate =
-    Math.round((totals?.correct / totals?.total) * 100) || 0;
-  const streak = calculateStreak(
-    userAttemptData?.map((attempt: resultType) => ({
-      createdAt: attempt.createdAt,
-    })) || [],
-  );
-
+  const { streak, isFetching, data, user, userSuccessRate, userAttemptData } =
+    UserResult();
   const getResultColor = (result: number) => {
     if (result >= 80) return "text-primary";
     if (result >= 60) return "text-secondary";
