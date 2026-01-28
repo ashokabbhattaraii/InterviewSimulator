@@ -36,7 +36,7 @@ export default function DashboardHome() {
               {user?.user_metadata.firstName}
             </span>
           </h1>
-          <p className="text-sm sm:text-base text-muted-foreground">
+          <p className="text-sm sm:text-base text-secondary">
             Ready to ace your next interview?
           </p>
         </div>

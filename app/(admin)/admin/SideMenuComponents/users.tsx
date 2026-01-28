@@ -23,7 +23,7 @@ interface userType {
 
 interface GetUsersResponse {
   success: boolean;
-  setIsEditing;
+  setIsEditing: (value: boolean) => void;
   user: userType[] | null;
 }
 

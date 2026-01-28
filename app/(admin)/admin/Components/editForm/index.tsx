@@ -74,16 +74,16 @@ export default function EditUser(selectedUserData: EditUserProps) {
 
   return (
     <>
-      <div className="fixed z-100 inset-0 min-h-screen bg-gray-50/40 backdrop-blur-sm py-8 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
-        <div className="w-full max-w-2xl bg-white rounded-lg shadow-md p-6 sm:p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Edit User</h2>
+      <div className="fixed z-100 inset-0 min-h-screen bg-background/90 backdrop-blur-sm py-8 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+        <div className="w-full max-w-2xl bg-background rounded-lg shadow-md p-6 sm:p-8">
+          <h2 className="text-2xl font-bold text-primary mb-6">Edit User</h2>
 
           <form className="space-y-6" onSubmit={handleSubmit(update)}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label
                   htmlFor="firstName"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-sm font-medium text-foreground mb-2"
                 >
                   First Name
                 </label>
@@ -102,7 +102,7 @@ export default function EditUser(selectedUserData: EditUserProps) {
               <div>
                 <label
                   htmlFor="lastName"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-sm font-medium text-foreground mb-2"
                 >
                   Last Name
                 </label>
@@ -124,7 +124,7 @@ export default function EditUser(selectedUserData: EditUserProps) {
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-sm font-medium text-foreground mb-2"
                 >
                   Email
                 </label>
@@ -144,7 +144,7 @@ export default function EditUser(selectedUserData: EditUserProps) {
               <div>
                 <label
                   htmlFor="phone"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-sm font-medium text-foreground mb-2"
                 >
                   Phone
                 </label>
@@ -166,7 +166,7 @@ export default function EditUser(selectedUserData: EditUserProps) {
               <div>
                 <label
                   htmlFor="role"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-sm font-medium text-foreground mb-2"
                 >
                   Role
                 </label>
@@ -183,7 +183,7 @@ export default function EditUser(selectedUserData: EditUserProps) {
               <div>
                 <label
                   htmlFor="status"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="block text-sm font-medium text-foreground mb-2"
                 >
                   Status
                 </label>

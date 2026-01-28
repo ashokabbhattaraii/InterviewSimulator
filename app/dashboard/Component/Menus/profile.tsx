@@ -57,11 +57,10 @@ export default function Profile(user: ProfileProps) {
   const nestedMeta = loggedUser?.user_metadata?.user_metadata || {};
   const [profile, setProfile] = useState<UpdateProfilePayload>({
     name: fullname || "",
-
     phone: loggedUser?.user_metadata?.user_metadata?.phone || "",
     bio: nestedMeta?.bio || "",
     location: nestedMeta?.location || "",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=John",
+    avatar: "",
   });
   const { mutate: handleEdit } = useUpdateProfileMutation(profile);
 
@@ -71,20 +70,19 @@ export default function Profile(user: ProfileProps) {
   const joinedDate = loggedUser?.created_at
     ? new Date(loggedUser.created_at).toLocaleDateString()
     : "";
-
   const handleSave = () => {
     handleEdit(profile);
     setIsEditing(false);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6 lg:p-12 max-w-7xl w-full">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-background  p-6 lg:p-12 max-w-8xl w-full">
+      <div className="max-w-4xl mx-auto ">
         {/* Header with Actions */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-gray-900">My Profile</h1>
-            <p className="text-gray-600 mt-2">
+            <h1 className="text-4xl font-bold text-primary">My Profile</h1>
+            <p className="text-muted-foreground mt-2">
               Manage your account settings and profile information
             </p>
           </div>
@@ -109,7 +107,7 @@ export default function Profile(user: ProfileProps) {
         </div>
 
         {/* Main Profile Card */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden mb-8">
+        <div className="bg-background rounded-2xl shadow-sm border border-border overflow-hidden mb-8">
           {/* Cover Section */}
           <div className="h-32 bg-slate-400"></div>
 
@@ -134,20 +132,20 @@ export default function Profile(user: ProfileProps) {
                     type="text"
                     value={profile.name}
                     onChange={(e) => handleChange("name", e.target.value)}
-                    className="text-2xl font-bold text-gray-900 mb-2 w-full px-3 py-2 border border-gray-300 rounded-lg"
+                    className="text-2xl font-bold text-foreground  mb-2 w-full px-3 py-2 border border-gray-300 rounded-lg"
                   />
                 ) : (
-                  <h2 className="text-2xl font-bold text-gray-900">
+                  <h2 className="text-2xl font-bold text-foreground ">
                     {profile.name}
                   </h2>
                 )}
-                <p className="text-gray-600 mt-2">Joined </p>
+                <p className="text-foreground mt-2">Joined {joinedDate}</p>
               </div>
             </div>
 
             {/* Bio Section */}
             <div className="mb-8">
-              <label className="block text-sm font-semibold text-gray-700 mb-3">
+              <label className="block text-sm font-semibold text-foreground mb-3">
                 Bio
               </label>
               {isEditing ? (
@@ -158,7 +156,7 @@ export default function Profile(user: ProfileProps) {
                   rows={3}
                 />
               ) : (
-                <p className="text-gray-600 text-lg">{profile.bio}</p>
+                <p className="text-foreground  text-lg">{profile.bio}</p>
               )}
             </div>
 
