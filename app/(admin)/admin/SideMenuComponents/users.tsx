@@ -9,6 +9,7 @@ import { useFormContext } from "../Context";
 import { toast } from "sonner";
 import { useAuthStore } from "@/app/(auth)/store/userAuth";
 interface userType {
+  phone?: string;
   id: string;
   email: string;
   created_at: string;
@@ -64,7 +65,7 @@ export default function User() {
   });
   function manageEdit() {
     const userData = data?.user?.find((user) => user.id === editUserId);
-    setSelectedUserData(userData);
+    setSelectedUserData(userData as userType);
     console.log("Data of selected user", userData);
     setIsEditing(true);
   }

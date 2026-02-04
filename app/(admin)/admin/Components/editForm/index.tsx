@@ -19,7 +19,7 @@ interface editFormType {
   status?: string;
 }
 interface userType {
-  phone: string;
+  phone?: string;
   id: string;
   email: string;
   created_at: string;
@@ -50,11 +50,11 @@ export default function EditUser(selectedUserData: EditUserProps) {
 
   console.log("datta of edit user from form componsnet", selectedUserData);
 
-  const { mutate: updateUser } = useUpdateUser(FormData, editUserId);
+  const { mutate: updateUser } = useUpdateUser(editUserId);
 
-  function update(FormData: EditUserFormData) {
-    console.log("Update form data", FormData);
-    const res = updateUser(FormData);
+  function update(formData: EditUserFormData) {
+    console.log("Update form data", formData);
+    const res = updateUser(formData);
     setIsEditing(false);
   }
 
@@ -131,9 +131,8 @@ export default function EditUser(selectedUserData: EditUserProps) {
                 <input
                   type="email"
                   id="email"
-                  defaultValue={selectedUserData?.email}
+                  defaultValue={selectedUserData?.selectedUserData?.email}
                   {...register("email")}
-                  placeholder="john@example.com"
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <span className="text-destructive">

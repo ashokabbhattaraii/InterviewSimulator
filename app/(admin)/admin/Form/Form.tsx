@@ -16,7 +16,7 @@ const userSchema = z
     password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string().min(8, "Confirm password is required"),
     role: z.enum(["admin", "user", "moderator"], {
-      errorMap: () => ({ message: "Please select a role" }),
+      message: "Please select a role",
     }),
   })
   .refine((data) => data.password === data.confirmPassword, {

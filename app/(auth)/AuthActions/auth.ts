@@ -16,7 +16,7 @@ interface user {
   username: string;
   email: string;
   password: string;
-  confirm: string;
+  confirm?: string;
   role: string;
 }
 interface userType {
