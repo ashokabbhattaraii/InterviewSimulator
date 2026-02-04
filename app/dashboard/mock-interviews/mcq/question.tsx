@@ -60,9 +60,10 @@ export default function MCQInterview() {
   let firstQn;
   const { data, isFetching, isLoading } = useQuestion();
   console.log(isFetching);
-  console.log(data);
-  const qnsLength = data?.length || 0;
-  firstQn = data?.[currentIndex];
+  console.log("First qns check", data);
+  const qnsLength = data?.data?.length || 0;
+  firstQn = data?.data?.[currentIndex];
+  console.log("firstQn", firstQn);
 
   useEffect(() => {
     start();

@@ -65,9 +65,6 @@ export default function Quest({
     },
   });
 
-  // console.log("Qns and", data);
-  // console.log("difficultyLevel", data?.difficulty);
-
   function validateAns(selectedText: string) {
     setIsSubmitted(true);
     setSelectedOption(selectedText);

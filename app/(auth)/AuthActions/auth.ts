@@ -1,9 +1,9 @@
 "use server";
 import { createClient } from "@/lib/server/server";
+import { success } from "zod";
 import { revalidatePath } from "next/cache";
 import { Redirect } from "next";
 import { redirect } from "next/navigation";
-import { success } from "zod";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 import { error } from "node:console";
@@ -39,9 +39,9 @@ export async function signUp(formData: user) {
     password: formData.password,
     options: {
       data: {
+        username: formData.username,
         firstName: formData.firstName,
         lastName: formData.lastName,
-        username: formData.username,
         role: "user",
       },
     },
@@ -148,4 +148,24 @@ export async function AddUser(formData: user) {
   }
 
   return { success: true, message: "User Added successfully" };
+}
+
+export async function LoginWithGoogle() {
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: "http://localhost:3000/dashboard",
+      queryParams: {
+        prompt: "select_account",
+      },
+    },
+  });
+  console.log("data", data);
+  console.log("Error", error);
+  if (error) {
+    return { success: false, message: error.message };
+  }
+
+  return { success: true, message: "Redirecting to google", url: data.url };
 }

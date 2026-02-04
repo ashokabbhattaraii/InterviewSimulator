@@ -9,10 +9,10 @@ interface StatsData {
   successRate: number;
 }
 
-export default function Stats() {
+export default function Stats(totalUsers: { totalUsers: number }) {
   // Sample data - replace with actual data from API/database
   const stats: StatsData = {
-    totalMembers: 1250,
+    totalMembers: totalUsers.totalUsers,
     totalAttempts: 5840,
     successRate: 78.5,
   };
@@ -73,13 +73,13 @@ export default function Stats() {
           <StatCard
             icon={Users}
             label="Total Members"
-            value={stats.totalMembers.toLocaleString()}
+            value={stats.totalMembers}
             color="bg-blue-500"
           />
           <StatCard
             icon={Target}
             label="Total Attempts"
-            value={stats.totalAttempts.toLocaleString()}
+            value={stats.totalAttempts}
             color="bg-purple-500"
           />
           <StatCard
