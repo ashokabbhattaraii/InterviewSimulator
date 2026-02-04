@@ -7,24 +7,25 @@ import { useEffect } from "react";
 import createClient from "@/lib/client/client";
 import SideBar from "./Component/sidebar";
 export default function Dashboard() {
-  const { setUser } = useAuthStore();
+  const { setUser, user } = useAuthStore();
   useEffect(() => {
-    async function fetchUser() {
+    async function saveUser() {
       const supabase = await createClient();
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      console.log("User Data from dashboard", user);
+      console.log(typeof user);
       setUser(user);
-      console.log("User Data from dashboard", user);
+      // console.log(typeof user, user);
     }
-    fetchUser();
+    saveUser();
+    // console.log("Logged in from dashboard", user, typeof user);
   }, []);
   return (
     <>
-      <div className="bg-black w-full">
-        <Nav></Nav>
-        <SideBar></SideBar>
+      <div className="bg-background w-full min-h-screen text-foreground">
+        <Nav />
+        <SideBar />
       </div>
     </>
   );

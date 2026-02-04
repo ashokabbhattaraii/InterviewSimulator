@@ -1,8 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import { createClient } from "./lib/server/server";
 
-const ADMIN_EMAIL = "ashok.ab.bhattaraii@gmail.com";
-
 export async function proxy(request: NextRequest) {
   const supabase = await createClient();
   const {
@@ -16,7 +14,8 @@ export async function proxy(request: NextRequest) {
       url.pathname = "/login";
       return NextResponse.redirect(url);
     }
-    if (user.email !== ADMIN_EMAIL) {
+    const userRole = user?.app_metadata?.role;
+    if (userRole !== "admin") {
       const url = request.nextUrl.clone();
       url.pathname = "/dashboard";
       return NextResponse.redirect(url);
@@ -35,10 +34,11 @@ export async function proxy(request: NextRequest) {
 
   if (pathname.startsWith("/login") || pathname.startsWith("/register")) {
     if (user) {
-      const redirectTo = user.email === ADMIN_EMAIL ? "/admin" : "/dashboard";
-      const url = request.nextUrl.clone();
-      url.pathname = redirectTo;
-      return NextResponse.redirect(url);
+      if (user) {
+        const redirectTo =
+          user?.app_metadata?.role === "admin" ? "/admin" : "/dashboard";
+        return NextResponse.redirect(new URL(redirectTo, request.url));
+      }
     }
     return NextResponse.next();
   }

@@ -1,9 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Filter, Download, Plus, X, AlertCircle } from "lucide-react";
+import { GetAllQuestions } from "@/app/(public)/hooks/question";
 
 export default function Questions() {
   const [showAddForm, setShowAddForm] = useState(false);
@@ -15,6 +16,8 @@ export default function Questions() {
     difficulty: "MEDIUM",
     isPublished: false,
   });
+
+  const { data, isFetching, error } = GetAllQuestions();
 
   const questionSchema = z.object({
     title: z.string().min(5, "Title should be at least 5 characters"),
@@ -52,23 +55,25 @@ export default function Questions() {
       <div className="p-6">
         {/* Questions Table */}
         <div className="relative group">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-xl blur-xl"></div>
-          <div className="relative bg-slate-900/50 backdrop-blur-xl border border-white/10 rounded-xl overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl blur-xl"></div>
+          <div className="relative bg-card backdrop-blur-xl border border-border rounded-xl overflow-hidden shadow-sm">
             {/* Table Header */}
-            <div className="flex items-center justify-between p-6 border-b border-white/10">
-              <h2 className="text-xl font-bold text-white">Recent Questions</h2>
+            <div className="flex items-center justify-between p-6 border-b border-border">
+              <h2 className="text-xl font-bold text-card-foreground">
+                Recent Questions ({data?.length || 0})
+              </h2>
               <div className="flex items-center gap-3">
-                <button className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-all text-sm">
+                <button className="flex items-center gap-2 px-4 py-2 bg-muted hover:bg-muted/80 border border-border rounded-lg transition-all text-sm text-foreground">
                   <Filter size={16} />
                   <span>Filter</span>
                 </button>
-                <button className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-all text-sm">
+                <button className="flex items-center gap-2 px-4 py-2 bg-muted hover:bg-muted/80 border border-border rounded-lg transition-all text-sm text-foreground">
                   <Download size={16} />
                   <span>Export</span>
                 </button>
                 <button
                   onClick={() => setShowAddForm(true)}
-                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 rounded-lg transition-all text-sm font-medium"
+                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground rounded-lg transition-all text-sm font-medium shadow-md"
                 >
                   <Plus size={16} />
                   <span>Add Question</span>
@@ -80,40 +85,109 @@ export default function Questions() {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-white/5">
-                    <th className="text-left p-4 text-sm font-medium text-slate-400">
+                  <tr className="border-b border-border">
+                    <th className="text-left p-4 text-sm font-medium text-muted-foreground">
                       Question
                     </th>
-                    <th className="text-left p-4 text-sm font-medium text-slate-400">
-                      Author
-                    </th>
-                    <th className="text-left p-4 text-sm font-medium text-slate-400">
+                    <th className="text-left p-4 text-sm font-medium text-muted-foreground">
                       Category
                     </th>
-                    <th className="text-left p-4 text-sm font-medium text-slate-400">
+                    <th className="text-left p-4 text-sm font-medium text-muted-foreground">
+                      Difficulty
+                    </th>
+                    <th className="text-left p-4 text-sm font-medium text-muted-foreground">
                       Status
                     </th>
-                    <th className="text-left p-4 text-sm font-medium text-slate-400">
-                      Views
-                    </th>
-                    <th className="text-left p-4 text-sm font-medium text-slate-400">
-                      Answers
-                    </th>
-                    <th className="text-left p-4 text-sm font-medium text-slate-400">
+                    <th className="text-left p-4 text-sm font-medium text-muted-foreground">
                       Date
                     </th>
-                    <th className="text-left p-4 text-sm font-medium text-slate-400">
+                    <th className="text-left p-4 text-sm font-medium text-muted-foreground">
                       Actions
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td colSpan={8} className="p-8 text-center text-slate-400">
-                      No questions found. Click &quot;Add Question&quot; to
-                      create your first question.
-                    </td>
-                  </tr>
+                  {isFetching ? (
+                    <tr>
+                      <td
+                        colSpan={6}
+                        className="p-8 text-center text-muted-foreground"
+                      >
+                        Loading questions...
+                      </td>
+                    </tr>
+                  ) : error ? (
+                    <tr>
+                      <td
+                        colSpan={6}
+                        className="p-8 text-center text-destructive"
+                      >
+                        Error loading questions. Please try again.
+                      </td>
+                    </tr>
+                  ) : data && data.length > 0 ? (
+                    data.map((question: any) => (
+                      <tr
+                        key={question.id}
+                        className="border-b border-border hover:bg-muted/30 transition-colors"
+                      >
+                        <td className="p-4">
+                          <p className="text-sm font-medium text-foreground">
+                            {question.title}
+                          </p>
+                        </td>
+                        <td className="p-4">
+                          <span className="text-sm text-muted-foreground">
+                            {question.category}
+                          </span>
+                        </td>
+                        <td className="p-4">
+                          <span
+                            className={`text-xs font-semibold px-3 py-1 rounded-full ${
+                              question.difficulty === "EASY"
+                                ? "bg-green-500/20 text-green-700 dark:text-green-400"
+                                : question.difficulty === "MEDIUM"
+                                  ? "bg-yellow-500/20 text-yellow-700 dark:text-yellow-400"
+                                  : "bg-red-500/20 text-red-700 dark:text-red-400"
+                            }`}
+                          >
+                            {question.difficulty}
+                          </span>
+                        </td>
+                        <td className="p-4">
+                          <span
+                            className={`text-xs font-semibold px-3 py-1 rounded-full ${
+                              question.isPublished
+                                ? "bg-primary/20 text-primary"
+                                : "bg-muted text-muted-foreground"
+                            }`}
+                          >
+                            {question.isPublished ? "Published" : "Draft"}
+                          </span>
+                        </td>
+                        <td className="p-4">
+                          <p className="text-sm text-muted-foreground">
+                            {new Date(question.createdAt).toLocaleDateString()}
+                          </p>
+                        </td>
+                        <td className="p-4">
+                          <button className="text-sm text-primary hover:text-primary/80 font-medium">
+                            Edit
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td
+                        colSpan={6}
+                        className="p-8 text-center text-muted-foreground"
+                      >
+                        No questions found. Click &quot;Add Question&quot; to
+                        create your first question.
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -123,18 +197,18 @@ export default function Questions() {
 
       {/* Add Question Modal */}
       {showAddForm && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl blur-xl"></div>
-            <div className="relative bg-slate-900 border border-white/10 rounded-xl p-6">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-xl blur-xl"></div>
+            <div className="relative bg-card border border-border rounded-xl p-6 shadow-2xl">
               {/* Modal Header */}
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-white">
+                <h2 className="text-2xl font-bold text-card-foreground">
                   Add New Question
                 </h2>
                 <button
                   onClick={() => setShowAddForm(false)}
-                  className="p-2 hover:bg-white/5 rounded-lg transition-colors"
+                  className="p-2 hover:bg-muted rounded-lg transition-colors text-muted-foreground hover:text-foreground"
                 >
                   <X size={20} />
                 </button>
@@ -147,17 +221,17 @@ export default function Questions() {
               >
                 {/* Title */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                  <label className="block text-sm font-medium text-foreground mb-2">
                     Question Title *
                   </label>
                   <input
                     type="text"
                     {...register("title")}
                     placeholder="Enter question title..."
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all"
+                    className="w-full px-4 py-3 bg-muted/30 border border-input rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:border-primary focus:bg-muted/50 transition-all"
                   />
                   {errors.title && (
-                    <div className="flex mt-4 items-center gap-2 text-red-600">
+                    <div className="flex mt-4 items-center gap-2 text-destructive">
                       <AlertCircle size={16} />
                       <p>{errors.title.message}</p>
                     </div>
@@ -166,17 +240,17 @@ export default function Questions() {
 
                 {/* Content */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                  <label className="block text-sm font-medium text-foreground mb-2">
                     Question Content *
                   </label>
                   <textarea
                     rows={6}
                     {...register("content")}
                     placeholder="Enter detailed question content..."
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all resize-none"
+                    className="w-full px-4 py-3 bg-muted/30 border border-input rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:border-primary focus:bg-muted/50 transition-all resize-none"
                   />
                   {errors.content && (
-                    <div className="flex mt-4 items-center gap-2 text-red-600">
+                    <div className="flex mt-4 items-center gap-2 text-destructive">
                       <AlertCircle size={16} />
                       <p>{errors.content.message}</p>
                     </div>
@@ -187,17 +261,17 @@ export default function Questions() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Category */}
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">
+                    <label className="block text-sm font-medium text-foreground mb-2">
                       Category *
                     </label>
                     <input
                       type="text"
                       {...register("category")}
                       placeholder="e.g., Backend, Frontend"
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all"
+                      className="w-full px-4 py-3 bg-muted/30 border border-input rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:border-primary focus:bg-muted/50 transition-all"
                     />
                     {errors.category && (
-                      <div className="flex mt-4 items-center gap-2 text-red-600">
+                      <div className="flex mt-4 items-center gap-2 text-destructive">
                         <AlertCircle size={16} />
                         <p>{errors.category.message}</p>
                       </div>
@@ -206,17 +280,17 @@ export default function Questions() {
 
                   {/* Tags */}
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">
+                    <label className="block text-sm font-medium text-foreground mb-2">
                       Tags *
                     </label>
                     <input
                       type="text"
                       {...register("tags")}
                       placeholder="javascript, react, node"
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all"
+                      className="w-full px-4 py-3 bg-muted/30 border border-input rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:border-primary focus:bg-muted/50 transition-all"
                     />
                     {errors.tags && (
-                      <div className="flex mt-4 items-center gap-2 text-red-600">
+                      <div className="flex mt-4 items-center gap-2 text-destructive">
                         <AlertCircle size={16} />
                         <p>{errors.tags.message}</p>
                       </div>
@@ -226,12 +300,12 @@ export default function Questions() {
 
                 {/* Difficulty */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                  <label className="block text-sm font-medium text-foreground mb-2">
                     Difficulty Level *
                   </label>
                   <select
                     {...register("difficulty")}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all"
+                    className="w-full px-4 py-3 bg-muted/30 border border-input rounded-lg text-foreground focus:outline-none focus:border-primary focus:bg-muted/50 transition-all"
                   >
                     <option value="EASY">Easy</option>
                     <option value="MEDIUM">Medium</option>
@@ -239,34 +313,18 @@ export default function Questions() {
                   </select>
                 </div>
 
-                {/* Publish Status */}
-                <div className="flex items-center gap-3">
-                  <input
-                    type="checkbox"
-                    id="isPublished"
-                    {...register("isPublished")}
-                    className="w-4 h-4 bg-white/5 border border-white/10 rounded focus:ring-2 focus:ring-blue-500"
-                  />
-                  <label
-                    htmlFor="isPublished"
-                    className="text-sm text-slate-300"
-                  >
-                    Publish immediately
-                  </label>
-                </div>
-
                 {/* Form Actions */}
-                <div className="flex items-center justify-end gap-3 pt-4 border-t border-white/10">
+                <div className="flex items-center justify-end gap-3 pt-4 border-t border-border">
                   <button
                     type="button"
                     onClick={() => setShowAddForm(false)}
-                    className="px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-all text-sm font-medium"
+                    className="px-6 py-3 bg-muted hover:bg-muted/80 border border-border rounded-lg transition-all text-sm font-medium text-foreground"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 rounded-lg transition-all text-sm font-medium"
+                    className="px-6 py-3 bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-primary-foreground rounded-lg transition-all text-sm font-medium shadow-md"
                   >
                     Create Question
                   </button>

@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../app/generated/prisma"
+  output   = "./generated/client"
 }
 
 datasource db {
@@ -14,9 +14,8 @@ datasource db {
   url       = env("DATABASE_URL")
 }
 
-
 model Question {
-  id String @id 
+  id String @id
   title String
   content String 
   slug  String  @unique
@@ -26,23 +25,18 @@ model Question {
   options String[]
   difficulty  Difficulty @default(MEDIUM)
 
-  //Engagement
   views Int @default(0)
   upvotes Int @default(0)
   downvotes Int @default(0)
 
-  //status
   isPublished Boolean @default(false)
   isFeatured  Boolean @default(false)
 
-  //timestamps
   createdAt DateTime  @default(now())
   updatedAt DateTime @updatedAt
 
-  //Relations
-  //answers Answer[]
-  //votes QuestionVote[]
-
+  answers Answer[]
+ 
 }
 
 
@@ -50,4 +44,36 @@ enum Difficulty {
   EASY
   MEDIUM
   HARD
+}
+
+model Answer {
+  id         String   @id @default(cuid())
+  text       String
+  isCorrect  Boolean  @default(false)
+
+  question   Question @relation(fields: [questionId], references: [id])
+  questionId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+
+}
+
+model Attempt {
+  id            String   @id @default(cuid())
+  userId        String
+  mockType      MockType
+  totalCorrect  Int
+  totalIncorrect Int
+  totalAttempt  Int
+  result        Float
+  createdAt     DateTime @default(now())
+}
+
+enum MockType {
+  MCQ
+  Coding
+  Behavioral
+  Technical
 }

@@ -1,0 +1,41 @@
+id,text,isCorrect,questionId,createdAt,updatedAt
+a1,React is a JavaScript library developed by Facebook for building user interfaces with reusable component-based architecture.,true,q1,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a2,React is a programming language used for backend development.,false,q1,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a3,React is a CSS framework for styling web pages.,false,q1,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a4,React is a database management system.,false,q1,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a5,The Virtual DOM is React's in-memory representation of the real DOM that optimizes updates and improves performance.,true,q2,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a6,The Virtual DOM is the same as the real DOM.,false,q2,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a7,The Virtual DOM is a tool for debugging React applications.,false,q2,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a8,The Virtual DOM is only used in Vue.js.,false,q2,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a9,Hooks are functions that allow you to use state and other React features in functional components without class components.,true,q3,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a10,Hooks are only used for styling components.,false,q3,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a11,Hooks replace the need for useState.,false,q3,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a12,Hooks can only be used in class components.,false,q3,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a13,Props are data passed from parent to child; state is data managed within the component itself.,true,q4,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a14,Props and state are the same thing.,false,q4,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a15,State can be passed from child to parent components.,false,q4,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a16,Props can be modified within the child component.,false,q4,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a17,useEffect runs side effects after component render and allows cleanup via return function and dependency control.,true,q5,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a18,useEffect only works in class components.,false,q5,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a19,useEffect runs before component render.,false,q5,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a20,useEffect cannot have a dependency array.,false,q5,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a21,Lifting state up means moving shared state to the common parent component to enable data sharing between siblings.,true,q6,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a22,Lifting state up is a performance optimization technique.,false,q6,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a23,Lifting state up means removing state from components.,false,q6,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a24,Lifting state up is only used with Redux.,false,q6,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a25,Context API provides a way to pass data through the component tree without prop drilling at every level.,true,q7,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a26,Context API replaces Redux completely.,false,q7,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a27,Context API can only be used with class components.,false,q7,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a28,Context API is slower than passing props.,false,q7,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a29,Controlled components are form elements where values are controlled by React state and onChange handlers.,true,q8,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a30,Controlled components cannot be used in React.,false,q8,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a31,Controlled components manage their own state internally.,false,q8,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a32,Controlled components are deprecated in React 18.,false,q8,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a33,Code splitting breaks your bundle into smaller chunks loaded on demand to improve initial load performance.,true,q9,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a34,Code splitting makes your app slower.,false,q9,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a35,Code splitting is only for CSS files.,false,q9,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a36,Code splitting requires a separate server.,false,q9,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a37,Reconciliation is React's process of comparing old and new virtual DOMs and updating only changed elements efficiently.,true,q10,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a38,Reconciliation updates the entire DOM on every change.,false,q10,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a39,Reconciliation is a performance problem in React.,false,q10,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z
+a40,Reconciliation only works with class components.,false,q10,2026-01-25T00:00:00Z,2026-01-25T00:00:00Z

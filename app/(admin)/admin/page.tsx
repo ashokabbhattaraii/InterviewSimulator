@@ -6,6 +6,7 @@ import User from "./SideMenuComponents/users";
 import createClient from "@/lib/client/client";
 import { signOut } from "@/app/(auth)/AuthActions/auth";
 import { useAuthStore } from "@/app/(auth)/store/userAuth";
+import { ThemeToggle } from "@/app/(public)/components/toogleComponent/toogle";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -102,29 +103,28 @@ const AdminDashboard = () => {
   }, []);
 
   const fullName =
-    (user?.user_metadata?.fname ?? "") +
+    (user?.user_metadata?.firstName ?? "") +
     " " +
-    (user?.user_metadata?.lname ?? "");
+    (user?.user_metadata?.lastName ?? "");
   console.log(isProfileOpen);
-  const handleInputChange = () => {};
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="h-screen bg-background text-foreground ">
       {/* Sidebar */}
       <aside
-        className={`fixed left-0 top-0 h-full bg-slate-900/50 backdrop-blur-xl border-r border-white/5 transition-all duration-300 z-50 ${
+        className={`fixed left-0 top-0 h-full bg-sidebar backdrop-blur-xl border-r border-border transition-all duration-300 z-50 ${
           sidebarOpen ? "w-64" : "w-20"
         }`}
       >
-        <div className="flex items-center justify-between p-6 border-b border-white/5">
+        <div className="flex items-center justify-between p-6 border-b border-border">
           {sidebarOpen && (
-            <h1 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            <h1 className="text-xl font-bold text-sidebar-foreground">
               Admin Panel
             </h1>
           )}
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-2 hover:bg-white/5 rounded-lg transition-colors"
+            className="p-2 hover:bg-sidebar-accent/10 text-sidebar-foreground rounded-lg transition-colors"
           >
             {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -137,8 +137,8 @@ const AdminDashboard = () => {
               onClick={() => setActiveTab(item.key)}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
                 activeTab === item.key
-                  ? "bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white border border-blue-500/30"
-                  : "text-slate-400 hover:bg-white/5 hover:text-white"
+                  ? "bg-sidebar-accent text-sidebar-accent-foreground shadow-md"
+                  : "text-sidebar-foreground/70 hover:bg-sidebar-accent/20 hover:text-sidebar-foreground"
               }`}
             >
               <item.icon size={20} />
@@ -157,74 +157,81 @@ const AdminDashboard = () => {
         }`}
       >
         {/* Top Bar */}
-        <header className="sticky top-0 z-40 bg-slate-900/50 backdrop-blur-xl border-b border-white/5">
+        <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-xl border-b border-border">
           <div className="flex items-center justify-between p-6">
             <div className="flex-1 max-w-xl">
               <div className="relative">
                 <Search
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
                   size={20}
                 />
                 <input
                   type="text"
                   placeholder="Search questions, users, or content..."
-                  className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all"
+                  className="w-full pl-10 pr-4 py-3 bg-muted/20 border border-border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:border-primary focus:bg-muted/30 transition-all"
                 />
               </div>
             </div>
 
             <div className="flex items-center gap-4 ml-6">
-              <button className="relative p-2 hover:bg-white/5 rounded-lg transition-colors">
-                <Bell className="text-white" size={20} />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+              <ThemeToggle></ThemeToggle>
+              <button className="relative p-2 hover:bg-muted/20 rounded-lg transition-colors">
+                <Bell className="text-foreground" size={20} />
+                <span className="absolute top-1 right-1 w-2 h-2 bg-destructive rounded-full"></span>
               </button>
 
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <div
-                    className="flex items-center gap-3 pl-4 border-l border-white/10 cursor-pointer"
-                    onClick={() => setIsProfileOpen(!isProfileOpen)}
-                  >
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-sm font-bold">
-                      {user?.user_metadata?.fname?.charAt(0) || ""}
-                      {user?.user_metadata?.lname?.charAt(0) || ""}
+              <div className="pr-6">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <div
+                      className="flex items-center gap-3 pl-4 border-l border-border cursor-pointer"
+                      onClick={() => setIsProfileOpen(!isProfileOpen)}
+                    >
+                      <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-sm font-bold">
+                        {user?.user_metadata?.firstName?.charAt(0) || ""}
+                        {user?.user_metadata?.lastName?.charAt(0) || ""}
+                      </div>
+                      <ChevronDown
+                        size={16}
+                        className="text-muted-foreground"
+                      />
                     </div>
-                    <ChevronDown size={16} className="text-slate-400" />
-                  </div>
-                </DropdownMenuTrigger>
+                  </DropdownMenuTrigger>
 
-                <DropdownMenuContent className="bg-white text-black rounded shadow-lg">
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator></DropdownMenuSeparator>
-                  <DropdownMenuItem>
-                    <DropdownMenuLabel>{fullName}</DropdownMenuLabel>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <DropdownMenuLabel>{user?.email}</DropdownMenuLabel>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuGroup className="flex justify-between">
-                    <DropdownMenuLabel>Account</DropdownMenuLabel>
-                    <Link href="/dashboard">
-                      <DropdownMenuLabel className="font-bold bg-slate-300 rounded-xl cursor-pointer">
-                        Dashboard
-                      </DropdownMenuLabel>
-                    </Link>
-                  </DropdownMenuGroup>
-                  <DropdownMenuSeparator></DropdownMenuSeparator>
-                  <DropdownMenuLabel
-                    className="cursor-pointer "
-                    onClick={() => signOut()}
-                  >
-                    LogOut
-                  </DropdownMenuLabel>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                  <DropdownMenuContent className="bg-popover text-popover-foreground rounded shadow-lg border border-border">
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator className="bg-border"></DropdownMenuSeparator>
+                    <DropdownMenuItem>
+                      <DropdownMenuLabel>{fullName}</DropdownMenuLabel>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <DropdownMenuLabel>{user?.email}</DropdownMenuLabel>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator className="bg-border" />
+                    <DropdownMenuGroup className="flex justify-between">
+                      <DropdownMenuLabel>Account</DropdownMenuLabel>
+                      <Link href="/dashboard">
+                        <DropdownMenuLabel className="font-bold bg-muted rounded-xl cursor-pointer hover:bg-muted/80">
+                          Dashboard
+                        </DropdownMenuLabel>
+                      </Link>
+                    </DropdownMenuGroup>
+                    <DropdownMenuSeparator className="bg-border"></DropdownMenuSeparator>
+                    <DropdownMenuLabel
+                      className="cursor-pointer text-destructive hover:text-destructive/80"
+                      onClick={() => signOut()}
+                    >
+                      LogOut
+                    </DropdownMenuLabel>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </div>
           </div>
         </header>
-        {activeTab == "questions" && <Questions></Questions>}
-        {activeTab == "users" && <User></User>}
+
+        {activeTab == "questions" && <Questions />}
+        {activeTab == "users" && <User />}
       </div>
     </div>
   );
