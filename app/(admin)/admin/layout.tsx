@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { FormProvider } from "./Context";
 import { ContextProvider } from "@/app/dashboard/Context/ValidateContext";
+import { Toaster } from "sonner";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -32,6 +33,7 @@ export default function RootLayout({
           </FormProvider>
           <ReactQueryDevtools initialIsOpen={false}></ReactQueryDevtools>
         </QueryClientProvider>
+        <Toaster position="top-right" />
       </body>
     </html>
   );

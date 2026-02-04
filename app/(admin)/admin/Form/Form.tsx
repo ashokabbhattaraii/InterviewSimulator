@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AddUser } from "@/app/(auth)/AuthActions/auth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { toast } from "sonner";
 const userSchema = z
   .object({
     firstName: z.string().min(1, "First name is required"),
@@ -45,6 +46,7 @@ export default function AddUserForm() {
         console.log("User added successfully", res.message);
         queryClient.invalidateQueries({ queryKey: ["users"] });
         setIsAddUserFormOpen(false);
+        toast.success("User added successfully");
       } else {
         console.log(res.message);
         setAddUserError(res.message);

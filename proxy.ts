@@ -36,7 +36,7 @@ export async function proxy(request: NextRequest) {
     if (user) {
       if (user) {
         const redirectTo =
-          user?.app_metadata?.role === "admin" ? "/admin" : "/dashboard";
+          user?.user_metadata?.role === "admin" ? "/admin" : "/dashboard";
         return NextResponse.redirect(new URL(redirectTo, request.url));
       }
     }
