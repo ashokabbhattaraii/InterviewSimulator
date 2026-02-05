@@ -8,6 +8,7 @@ import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 import { error } from "node:console";
 import Error from "next/error";
+import { toast } from "sonner";
 
 interface user {
   firstName: string;
@@ -15,13 +16,14 @@ interface user {
   username: string;
   email: string;
   password: string;
-  confirm: string;
-  role: string;
+  confirm?: string;
+  role?: string;
 }
 interface userType {
   id: string;
   email: string;
   created_at: string;
+
   user_metadata: {
     firstName?: string;
     lastName?: string;
@@ -36,6 +38,7 @@ export async function signUp(formData: user) {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signUp({
     email: formData.email,
+
     password: formData.password,
     options: {
       data: {
@@ -86,6 +89,7 @@ export async function signOut() {
     console.log("Error signing out:", error.message);
     return { success: false, message: error.message };
   }
+  toast.success("Signed out successfully");
   revalidatePath("/", "layout");
   redirect("/");
 }

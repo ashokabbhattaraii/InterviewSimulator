@@ -34,7 +34,7 @@ interface UpdateProfilePayload {
   phone?: string;
   bio: string;
   location: string;
-  avatar: string;
+  avatar?: string;
 }
 interface ProfileProps {
   user: userType | null;
@@ -62,7 +62,7 @@ export default function Profile(user: ProfileProps) {
     location: nestedMeta?.location || "",
     avatar: "",
   });
-  const { mutate: handleEdit } = useUpdateProfileMutation(profile);
+  const { mutate: handleEdit } = useUpdateProfileMutation();
 
   const handleChange = (field: string, value: string) => {
     setProfile({ ...profile, [field]: value });

@@ -5,9 +5,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Filter, Download, Plus, X, AlertCircle } from "lucide-react";
 import { GetAllQuestions } from "@/app/(public)/hooks/question";
-
+import ImportQuestion from "../Components/import-question/importQuestion";
+import { useFormContext } from "../Context";
+import { toast } from "sonner";
 export default function Questions() {
   const [showAddForm, setShowAddForm] = useState(false);
+
   const [formData, setFormData] = useState({
     title: "",
     content: "",
@@ -18,7 +21,7 @@ export default function Questions() {
   });
 
   const { data, isFetching, error } = GetAllQuestions();
-
+  const { isImportOpen, setIsImportOpen } = useFormContext();
   const questionSchema = z.object({
     title: z.string().min(5, "Title should be at least 5 characters"),
     content: z.string().min(1, "Content is required"),
@@ -63,13 +66,23 @@ export default function Questions() {
                 Recent Questions ({data?.length || 0})
               </h2>
               <div className="flex items-center gap-3">
-                <button className="flex items-center gap-2 px-4 py-2 bg-muted hover:bg-muted/80 border border-border rounded-lg transition-all text-sm text-foreground">
+                <button
+                  onClick={() => toast.success("Filter clicked successfully")}
+                  className="flex items-center gap-2 px-4 py-2 bg-muted hover:bg-muted/80 border border-border rounded-lg transition-all text-sm text-foreground"
+                >
                   <Filter size={16} />
                   <span>Filter</span>
                 </button>
                 <button className="flex items-center gap-2 px-4 py-2 bg-muted hover:bg-muted/80 border border-border rounded-lg transition-all text-sm text-foreground">
                   <Download size={16} />
                   <span>Export</span>
+                </button>
+                <button
+                  onClick={() => setIsImportOpen(true)}
+                  className="flex items-center gap-2 px-4 py-2 cursor-pointer bg-muted hover:bg-muted/80 border border-border rounded-lg transition-all text-sm text-foreground"
+                >
+                  <Download size={16} />
+                  <span>Import</span>
                 </button>
                 <button
                   onClick={() => setShowAddForm(true)}
@@ -334,6 +347,7 @@ export default function Questions() {
           </div>
         </div>
       )}
+      {isImportOpen && <ImportQuestion />}
     </>
   );
 }

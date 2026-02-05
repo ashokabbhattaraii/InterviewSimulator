@@ -21,7 +21,7 @@ export default function GetEditUser() {
   });
 }
 
-export function useUpdateUser(formData: EditUserFormData, userId: string) {
+export function useUpdateUser(userId: string) {
   return useMutation({
     mutationKey: ["updateUser", userId],
     mutationFn: async (formData: EditUserFormData) => {

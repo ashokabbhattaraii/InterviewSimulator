@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AddUser } from "@/app/(auth)/AuthActions/auth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { toast } from "sonner";
 const userSchema = z
   .object({
     firstName: z.string().min(1, "First name is required"),
@@ -15,7 +16,7 @@ const userSchema = z
     password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string().min(8, "Confirm password is required"),
     role: z.enum(["admin", "user", "moderator"], {
-      errorMap: () => ({ message: "Please select a role" }),
+      message: "Please select a role",
     }),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -45,6 +46,7 @@ export default function AddUserForm() {
         console.log("User added successfully", res.message);
         queryClient.invalidateQueries({ queryKey: ["users"] });
         setIsAddUserFormOpen(false);
+        toast.success("User added successfully");
       } else {
         console.log(res.message);
         setAddUserError(res.message);

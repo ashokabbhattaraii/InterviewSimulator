@@ -6,8 +6,10 @@ import { Loader2, ArrowLeft, ArrowRight, Edit, Trash } from "lucide-react";
 import EditUser from "../Components/editForm";
 import AddUserForm from "../Form/Form";
 import { useFormContext } from "../Context";
-
+import { toast } from "sonner";
+import { useAuthStore } from "@/app/(auth)/store/userAuth";
 interface userType {
+  phone?: string;
   id: string;
   email: string;
   created_at: string;
@@ -28,6 +30,7 @@ interface GetUsersResponse {
 }
 
 export default function User() {
+  const { user: loggedInUser } = useAuthStore();
   const [page, setPage] = useState(1);
   const {
     isAddUserFormOpen,
@@ -62,7 +65,7 @@ export default function User() {
   });
   function manageEdit() {
     const userData = data?.user?.find((user) => user.id === editUserId);
-    setSelectedUserData(userData);
+    setSelectedUserData(userData as userType);
     console.log("Data of selected user", userData);
     setIsEditing(true);
   }
@@ -99,6 +102,10 @@ export default function User() {
   }
 
   async function confirmDelete(userId: string) {
+    if (userId === loggedInUser?.id) {
+      toast.error("You cannot delete your own account!");
+      return;
+    }
     const res = await fetch("/api/delete", {
       method: "DELETE",
       headers: {
@@ -108,8 +115,8 @@ export default function User() {
     });
     const deleteData = await res.json();
     if (deleteData.success) {
-      alert("User deleted successfully");
       refetch();
+      toast.success("User deleted successfully!!");
     } else {
       alert("Error deleting user");
     }
