@@ -4,7 +4,7 @@ interface UpdateProfilePayload {
   phone?: string;
   bio: string;
   location: string;
-  avatar: string;
+  avatar?: string;
 }
 export default function useUpdateProfileMutation() {
   return useMutation<UpdateProfilePayload, Error, UpdateProfilePayload>({
