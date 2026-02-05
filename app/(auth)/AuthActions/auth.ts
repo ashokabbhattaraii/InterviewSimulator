@@ -17,7 +17,7 @@ interface user {
   email: string;
   password: string;
   confirm?: string;
-  role: string;
+  role?: string;
 }
 interface userType {
   id: string;

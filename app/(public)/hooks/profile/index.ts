@@ -6,12 +6,10 @@ interface UpdateProfilePayload {
   location: string;
   avatar: string;
 }
-export default function useUpdateProfileMutation(
-  payload: UpdateProfilePayload,
-) {
-  return useMutation<UpdateProfilePayload, void>({
+export default function useUpdateProfileMutation() {
+  return useMutation<UpdateProfilePayload, Error, UpdateProfilePayload>({
     mutationKey: ["profile"],
-    mutationFn: async () => {
+    mutationFn: async (payload: UpdateProfilePayload) => {
       const res = await fetch("/api/profile/edit", {
         method: "POST",
         headers: {
